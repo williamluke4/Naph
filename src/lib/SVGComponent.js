@@ -1,8 +1,8 @@
 import React from 'react';
 
-const SVGComponent = ({children, ...rest}) => {
+const SVGComponent = ({children, childRef, ...rest}) => {
     return (
-        <svg style={{position: 'absolute', zIndex: 9000}} {...rest} ref="svg">
+        <svg style={{position: 'absolute', zIndex: 9000}} {...rest} ref={(svgRef) => childRef(svgRef)}>
             {children}
         </svg>
     );

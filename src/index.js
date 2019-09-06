@@ -49,10 +49,8 @@ const index = ({
             e.stopPropagation();
             e.preventDefault();
 
-            const {svgComponent: {refs: {svg}}} = this.refs;
-
             //Get svg element position to substract offset top and left
-            const svgRect = svg.getBoundingClientRect();
+            const svgRect = svgRef.current.getBoundingClientRect();
 
             setState({
                 mousePos: {
@@ -96,8 +94,8 @@ const index = ({
         if (state.dragging) {
 
             let nodes = state.data.nodes;
-            let fromNode = getNodebyId(nodes, this.state.source[0]);
-            let fromPinName = fromNode.fields.out[this.state.source[1]].name;
+            let fromNode = getNodebyId(nodes, state.source[0]);
+            let fromPinName = fromNode.fields.out[state.source[1]].name;
             let toNode = getNodebyId(nodes, nid);
             let toPinName = toNode.fields.in[inputIndex].name;
 
@@ -185,7 +183,7 @@ const index = ({
 
                 {/* render our connectors */}
 
-                <SVGComponent height="100%" width="100%" ref={svgRef}>
+                <SVGComponent height="100%" width="100%" childRef={svgRef}>
 
                     {connectors.map((connector, spineIndex) => {
                         const fromNode = getNodebyId(nodes, connector.from_node);
