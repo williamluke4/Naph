@@ -1,26 +1,31 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 
 import NodeInputListItem from './NodeInputListItem';
 
-export default class NodeInputList extends React.Component {
+const NodeInputList = ({
+                           onCompleteConnector,
+                           items
+                       }) => {
+    const handleMouseUp = useCallback((i) => {
+        onCompleteConnector(i);
+    }, [onCompleteConnector]);
 
-	onMouseUp(i) {
-		this.props.onCompleteConnector(i);
-	}
-	
-	render() {
-		let i = 0;
+    return (
+        <div className="nodeInputWrapper">
+            <ul className="nodeInputList">
+                {
+                    items.map((item, index) => (
+                        <NodeInputListItem
+                            onMouseUp={handleMouseUp}
+                            key={index}
+                            index={index + 1}
+                            item={item}
+                        />
+                    ))
+                }
+            </ul>
+        </div>
+    );
+};
 
-		return (
-			<div className="nodeInputWrapper">
-				<ul className="nodeInputList">
-					{this.props.items.map((item) => {
-						return (
-							<NodeInputListItem onMouseUp={(i)=>this.onMouseUp(i)} key={i} index={i++} item={item} />
-						)
-					})}
-				</ul>
-			</div>
-		);
-	}
-}
+export default React.memo(NodeInputList);

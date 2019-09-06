@@ -1,10 +1,9 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import onClickOutside from 'react-onclickoutside';
-
-var Draggable = require('react-draggable');
+import Draggable from 'react-draggable';
 
 import NodeInputList from './NodeInputList';
-import NodeOuputList from './NodeOutputList';
+import NodeOutputList from './NodeOutputList';
 
 class Node extends React.Component {
   constructor(props) {
@@ -38,7 +37,7 @@ class Node extends React.Component {
     this.props.onCompleteConnector(this.props.nid, index);
   }
 
-  handleClick(e) {
+  handleClick() {
     this.setState({selected: true});
     if (this.props.onNodeSelect) {
       this.props.onNodeSelect(this.props.nid);
@@ -72,7 +71,7 @@ class Node extends React.Component {
             </header>
             <div className="node-content">
               <NodeInputList items={this.props.inputs} onCompleteConnector={(index)=>this.onCompleteConnector(index)} />
-              <NodeOuputList items={this.props.outputs} onStartConnector={(index)=>this.onStartConnector(index)} />
+              <NodeOutputList items={this.props.outputs} onStartConnector={(index)=>this.onStartConnector(index)} />
             </div>
         </section>
         </Draggable>

@@ -1,24 +1,27 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 
-export default class NodeOutputListItem extends React.Component {
-	
-	onMouseDown(e) {
-		e.stopPropagation();
-  		e.preventDefault();
+const NodeOutputListItem = ({onMouseDown, index, item}) => {
 
-		this.props.onMouseDown(this.props.index);
-	}
+    const handleMouseDown = useCallback((e) => {
+        e.stopPropagation();
+        e.preventDefault();
 
-	noop(e) {
-		e.stopPropagation();
-  		e.preventDefault();
-	}
+        onMouseDown(index);
+    }, []);
 
-	render() {
-		return (
-			<li onMouseDown={(e)=>this.onMouseDown(e)}>
-				<a href="#" onClick={(e)=>this.noop(e)}>{this.props.item.name} <i className="fa fa-circle-o"></i></a>
-			</li>
-		);
-	}
-}
+    const noop = useCallback((e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    }, []);
+
+    return (
+        <li onMouseDown={handleMouseDown}>
+            <a href="#" onClick={noop}>
+                {item.name}
+                <i className="fa fa-circle-o"/>
+            </a>
+        </li>
+    );
+};
+
+export default React.memo(NodeOutputListItem);

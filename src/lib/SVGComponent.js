@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class SVGComponent extends Component {
-  render() {
-    return <svg style={{position:'absolute', zIndex:9000}} {...this.props} ref="svg">{this.props.children}</svg>;
-  }
-}
+const SVGComponent = ({children, ...rest}) => {
+    return (
+        <svg style={{position: 'absolute', zIndex: 9000}} {...rest} ref="svg">
+            {children}
+        </svg>
+    );
+};
+
+export default React.memo(SVGComponent);

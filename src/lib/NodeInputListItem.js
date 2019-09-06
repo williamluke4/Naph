@@ -1,47 +1,44 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 
-export default class NodeInputListItem extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			hover: false
-		}
-	}
+const NodeInputListItem = ({
+                               index,
+                               onMouseUp,
+                               item,
+                           }) => {
+    const [isHover, setHover] = useState(false);
 
-	onMouseUp(e) {
-		e.stopPropagation();
-  		e.preventDefault();
+    const handleMouseUp = useCallback((e) => {
+        e.stopPropagation();
+        e.preventDefault();
 
-		this.props.onMouseUp(this.props.index);
-	}
+        onMouseUp(index);
+    }, [index, onMouseUp]);
 
-  onMouseOver() {
-		this.setState({hover: true});
-	}
+    const handleMouseOver = useCallback(() => {
+        setHover(true);
+    }, []);
 
-	onMouseOut() {
-    this.setState({hover: false});
-  }
+    const handleMouseOut = useCallback(() => {
+        setHover(false);
+    }, []);
 
-	noop(e) {
-		e.stopPropagation();
-  		e.preventDefault();
-	}
+    const noop = useCallback((e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    }, []);
 
-	render() {
-		let {name} = this.props.item;
-		let {hover} = this.state;
+    return (
+        <li>
+            <a onClick={noop} onMouseUp={handleMouseUp} href="#">
+                <i
+                    className={isHover ? 'fa fa-circle-o hover' : 'fa fa-circle-o'}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                />
+                {item.name}
+            </a>
+        </li>
+    );
+};
 
-		return (
-			<li>
-				<a onClick={(e)=>this.noop(e)} onMouseUp={(e)=>this.onMouseUp(e)} href="#">
-					<i className={hover ? 'fa fa-circle-o hover' : 'fa fa-circle-o'}
-						 onMouseOver={() => {this.onMouseOver()}}
-						 onMouseOut={() => {this.onMouseOut()}}
-					></i>
-					{name}
-				</a>
-			</li>
-		);			
-	}
-}
+export default React.memo(NodeInputListItem);
