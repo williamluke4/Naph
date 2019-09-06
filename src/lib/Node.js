@@ -1,83 +1,97 @@
-import React from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import onClickOutside from 'react-onclickoutside';
 import Draggable from 'react-draggable';
 
 import NodeInputList from './NodeInputList';
 import NodeOutputList from './NodeOutputList';
 
-class Node extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: false
-    }
-  }
+const Node = ({
+                  nid,
+                  pos,
+                  title,
+                  inputs,
+                  outputs,
+                  onNodeStart,
+                  onNodeStop,
+                  onNodeMove,
+                  onNodeSelect,
+                  onNodeDeselect,
+                  onStartConnector,
+                  onCompleteConnector,
+                  index: propIndex,
+              }) => {
+    const [isSelected, setSelected] = useState(false);
 
-  handleDragStart(event, ui) {
-    this.props.onNodeStart(this.props.nid, ui);
-  }
+    const handleDragStart = useCallback((event, ui) => {
+        onNodeStart(nid, ui);
+    }, [nid, onNodeStart]);
 
-  handleDragStop(event, ui) {
-    this.props.onNodeStop(this.props.nid, ui.position);
-  }
+    const handleDragStop = useCallback((event, ui) => {
+        onNodeStop(nid, ui.position);
+    }, [nid, onNodeStop]);
 
-  handleDrag(event, ui) {
-    this.props.onNodeMove(this.props.index, ui.position);
-  }
+    const handleDrag = useCallback((event, ui) => {
+        onNodeMove(propIndex, ui.position);
+    }, [onNodeMove, propIndex]);
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.selected !== nextState.selected;
-  }
+    const handleStartConnector = useCallback((index) => {
+        onStartConnector(nid, index);
+    }, [nid, onStartConnector]);
 
-  onStartConnector(index) {
-    this.props.onStartConnector(this.props.nid, index);
-  }
+    const handleCompleteConnector = useCallback((index) => {
+        onCompleteConnector(nid, index);
+    }, [nid, onCompleteConnector]);
 
-  onCompleteConnector(index) {
-    this.props.onCompleteConnector(this.props.nid, index);
-  }
+    const handleClick = useCallback(() => {
+        setSelected(true);
+        if (onNodeSelect) {
+            onNodeSelect(nid);
+        }
+    }, [nid, onNodeSelect]);
 
-  handleClick() {
-    this.setState({selected: true});
-    if (this.props.onNodeSelect) {
-      this.props.onNodeSelect(this.props.nid);
-    }
-  }
+    Node.handleClickOutside = useCallback(() => {
+        if (onNodeDeselect && isSelected) {
+            onNodeDeselect(nid);
+        }
+        setSelected(false);
+    }, [nid, isSelected, onNodeDeselect]);
 
-  handleClickOutside() {
-    let {selected} = this.state;
-    if (this.props.onNodeDeselect && selected) {
-      this.props.onNodeDeselect(this.props.nid);
-    }
-    this.setState({selected: false});
-  }
+    const nodeClass = useMemo(() => (
+        'node' + (isSelected ? ' selected' : '')
+    ), [isSelected]);
 
-	render() {
-    let {selected} = this.state;
-
-    let nodeClass = 'node' + (selected ? ' selected' : '');
-
-		return (
-		  <div onDoubleClick={(e) => {this.handleClick(e)}}>
-        <Draggable
-          start={{x:this.props.pos.x,y:this.props.pos.y}}
-          handle=".node-header"
-          onStart={(event, ui)=>this.handleDragStart(event, ui)}
-          onStop={(event, ui)=>this.handleDragStop(event, ui)}
-          onDrag={(event, ui)=>this.handleDrag(event, ui)}>
-        <section className={nodeClass} style={{zIndex:10000}}>
-            <header className="node-header">
-              <span className="node-title">{this.props.title}</span>
-            </header>
-            <div className="node-content">
-              <NodeInputList items={this.props.inputs} onCompleteConnector={(index)=>this.onCompleteConnector(index)} />
-              <NodeOutputList items={this.props.outputs} onStartConnector={(index)=>this.onStartConnector(index)} />
-            </div>
-        </section>
-        </Draggable>
-      </div>
+    return (
+        <div onDoubleClick={handleClick}>
+            <Draggable
+                start={{x: pos.x, y: pos.y}}
+                handle=".node-header"
+                onStart={handleDragStart}
+                onStop={handleDragStop}
+                onDrag={handleDrag}>
+                <section className={nodeClass} style={{zIndex: 10000}}>
+                    <header className="node-header">
+                        <span className="node-title">
+                          {title}
+                        </span>
+                    </header>
+                    <div className="node-content">
+                        <NodeInputList
+                            items={inputs}
+                            onCompleteConnector={handleCompleteConnector}
+                        />
+                        <NodeOutputList
+                            items={outputs}
+                            onStartConnector={handleStartConnector}
+                        />
+                    </div>
+                </section>
+            </Draggable>
+        </div>
     );
-	}
-}
+};
 
-export default onClickOutside(Node);
+const clickOutsideConfig = {
+  handleClickOutside: () => Node.handleClickOutside
+};
+
+export default onClickOutside(Node, clickOutsideConfig);
