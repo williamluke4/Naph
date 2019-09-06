@@ -31,7 +31,7 @@ const Spline = ({
         }
     }, [selected, mousePos, onClick]);
 
-    const handleClickOutside = useCallback((e) => {
+    Spline.handleClickOutside = useCallback((e) => {
         setSelected(false);
 
         if (onClickOutsideFromProps) {
@@ -85,4 +85,8 @@ const Spline = ({
     )
 };
 
-export default onClickOutside(Spline)
+const clickOutsideConfig = {
+    handleClickOutside: () => Spline.handleClickOutside
+};
+
+export default onClickOutside(Spline, clickOutsideConfig);
