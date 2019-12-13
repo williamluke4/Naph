@@ -1,7 +1,5 @@
 
-## Demo
-
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/C-pETutAfrE/1.jpg)](http://www.youtube.com/watch?v=C-pETutAfrE "React Node Graph Demo")
+# Naph 
 
 ## Install
 
@@ -14,8 +12,9 @@ npm install --save naph
 
 
 ```js
+import ReactNodeGraph from 'naph';
 
-var exampleGraph = {
+const example = {
   "nodes":[
     {"nid":0,"type":"Timer","x":89,"y":82,"fields":{"in":[{"name":"reset"},{"name":"pause"},{"name":"max"}],"out":[{"name":"out"}]}},
     {"nid":1,"type":"MathMult","x":284,"y":82,"fields":{"in":[{"name":"in"},{"name":"factor"}],"out":[{"name":"out"}]}},
@@ -33,21 +32,12 @@ and passed to our component
 ```js
 
 <ReactNodeGraph 
-            data={exampleGraph} 
-            onNodeMove={(nid, pos)=>this.onNodeMove(nid, pos)}
-            onNodeStartMove={(nid)=>this.onNodeStartMove(nid)}
-            onNewConnector={(n1,o,n2,i)=>this.onNewConnector(n1,o,n2,i)} 
-            onRemoveConnector={(connector)=>this.onRemoveConnector(connector)}
+  data={example} 
+  onNodeMove={(nid, pos)=>this.onNodeMove(nid, pos)}
+  onNodeStartMove={(nid)=>this.onNodeStartMove(nid)}
+  onNewConnector={(n1,o,n2,i)=>this.onNewConnector(n1,o,n2,i)} 
+  onRemoveConnector={(connector)=>this.onRemoveConnector(connector)}
 />
 
 ```
 
-#### Events:
-
-OnNodeMove : triggered on a completed node drag
-
-onNodeStartMove : triggered at the start of a node move
-
-onNewConnector : triggered when a new connection is made
-
-onRemoveConnector : triggered when a connection is removed
