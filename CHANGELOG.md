@@ -1,3 +1,22 @@
+# v0.2.1 (Fri Dec 13 2019)
+
+#### 🐛  Bug Fix
+
+- fix(Build): *  (william@ordino.ai)
+- fix(Spline): Jumping Issue when adding or removing a spline  (william@ordino.ai)
+- Create CODE_OF_CONDUCT.md [#2](https://github.com/williamluke4/Naph/pull/2) (william@ordino.ai)
+
+#### ⚠️  Pushed to master
+
+- docs: Add Screen Shot  (william@ordino.ai)
+- docs: Clean Read Me  (william@ordino.ai)
+
+#### Authors: 1
+
+- William Luke ([@williamluke4](https://github.com/williamluke4))
+
+---
+
 # v0.2.0 (Fri Dec 13 2019)
 
 #### 🚀  Enhancement
