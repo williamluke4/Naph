@@ -1,6 +1,6 @@
 {
   "name": "naph",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "UI for rendering Node Graphs.",
   "main": "build/index.js",
   "peerDependencies": {
@@ -23,7 +23,7 @@
     "react-hot-loader": "^4.12.18",
     "tslib": "^1.10.0",
     "typescript": "^3.7.3",
-    "eslint":"^6.0.0"
+    "eslint": "^6.0.0"
   },
   "dependencies": {
     "lodash.clonedeep": "^4.5.0",
