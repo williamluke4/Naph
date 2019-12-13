@@ -6,3 +6,4 @@ build/
 *.env
 *.sublime-*
 .cache
+*.map
