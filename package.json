@@ -1,0 +1,54 @@
+{
+  "name": "naph",
+  "version": "0.0.0",
+  "description": "UI for rendering Node Graphs.",
+  "main": "build/index.js",
+  "peerDependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@auto-it/conventional-commits": "^7.13.1",
+    "@types/lodash.clonedeep": "^4.5.6",
+    "@types/react": "^16.9.16",
+    "@types/react-onclickoutside": "^6.7.3",
+    "@typescript-eslint/eslint-plugin": "^2.11.0",
+    "@typescript-eslint/parser": "^2.11.0",
+    "@zeit/ncc": "^0.20.5",
+    "auto": "^7.13.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "parcel-bundler": "^1.12.4",
+    "react": "^16.12.0",
+    "react-hot-loader": "^4.12.18",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.3",
+    "eslint":"^6.0.0"
+  },
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "react-dom": "^16.12.0",
+    "react-draggable": "^3.3.2"
+  },
+  "scripts": {
+    "build:src": "tsc -d",
+    "build:example": "parcel build example/index.html",
+    "build": "yarn build:src && yarn build:example",
+    "release": "auto shipit",
+    "dev": "parcel example/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamluke4/react-node-graph.git"
+  },
+  "keywords": [
+    "react",
+    "component",
+    "react-component",
+    "node",
+    "graph",
+    "ui"
+  ],
+  "author": "William Luke",
+  "license": "MIT"
+}
