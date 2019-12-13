@@ -237,5 +237,5 @@ const ReactNodeGraph = ({
   };
   return renderComponents();
 };
-
+export * from './types';
 export default React.memo(ReactNodeGraph);
