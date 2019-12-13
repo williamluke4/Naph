@@ -3,7 +3,7 @@ import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Position, Item } from '../types';
 import NodeInputList from "./NodeInputList";
 import NodeOutputList from "./NodeOutputList";
-import useOutsideClick from "../hooks/useOutsideClick";
+import useClickAway from "../hooks/useClickAway";
 interface NodeProps {
     nid: number;
     pos: Position;
@@ -36,55 +36,40 @@ const Node = ({
 }: NodeProps) => {
   const [isSelected, setSelected] = useState(false);
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const handleDragStart = useCallback(
-    (event: DraggableEvent, ui: DraggableData) => {
+
+  const handleDragStart =(event: DraggableEvent, ui: DraggableData) => {
       onNodeStart(nid, ui);
-    },
-    [nid, onNodeStart]
-  );
+  }
 
-  const handleDragStop = useCallback(
-    (event: DraggableEvent, ui: DraggableData) => {
-      onNodeStop(nid,   {x:ui.x, y:ui.y});
-    },
-    [nid, onNodeStop]
-  );
+  const handleDragStop = (event: DraggableEvent, ui: DraggableData) => {
+    onNodeStop(nid,   {x:ui.x, y:ui.y});
+  }
+  const handleDrag = (event: DraggableEvent, ui: DraggableData) => {
+    onNodeMove(propIndex, {x:ui.x, y:ui.y});
+  }
 
-  const handleDrag = useCallback(
-    (event: DraggableEvent, ui: DraggableData) => {
-      onNodeMove(propIndex, {x:ui.x, y:ui.y});
-    },
-    [onNodeMove, propIndex]
-  );
-
-  const handleStartConnector = useCallback(
-    index => {
+  const handleStartConnector = (index: number) => {
       onStartConnector(nid, index);
-    },
-    [nid, onStartConnector]
-  );
+  }
 
-  const handleCompleteConnector = useCallback(
-    index => {
-      onCompleteConnector(nid, index);
-    },
-    [nid, onCompleteConnector]
-  );
+  const handleCompleteConnector = (index: number) => {
+    onCompleteConnector(nid, index);
+  }
 
-  const handleClick = useCallback(() => {
-    setSelected(true);
+  const handleClick = () => {
+    setSelected(!isSelected);
     if (onNodeSelect) {
       onNodeSelect(nid);
     }
-  }, [nid, onNodeSelect]);
+  }
 
-  useOutsideClick(ref, useCallback(() => {
+  useClickAway(ref, () => {
     if (onNodeDeselect && isSelected) {
       onNodeDeselect(nid);
     }
     setSelected(false);
-    }, [nid, isSelected, onNodeDeselect])
-  )
+    })
+  
 
 
   const nodeClass = useMemo(() => "node" + (isSelected ? " selected" : ""), [

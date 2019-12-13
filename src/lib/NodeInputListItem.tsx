@@ -8,28 +8,25 @@ interface NodeInputListItemProps {
 const NodeInputListItem = ({ index, onMouseUp, item }: NodeInputListItemProps) => {
   const [isHover, setHover] = useState(false);
 
-  const handleMouseUp = useCallback(
-    e => {
-      e.stopPropagation();
-      e.preventDefault();
-
-      onMouseUp(index);
-    },
-    [index, onMouseUp]
-  );
-
-  const handleMouseOver = useCallback(() => {
-    setHover(true);
-  }, []);
-
-  const handleMouseOut = useCallback(() => {
-    setHover(false);
-  }, []);
-
-  const noop = useCallback(e => {
+  const handleMouseUp = (e: any) => {
     e.stopPropagation();
     e.preventDefault();
-  }, []);
+
+    onMouseUp(index);
+  }
+
+  const handleMouseOver = () => {
+    setHover(true);
+  }
+
+  const handleMouseOut = () => {
+    setHover(false);
+  }
+
+  const noop = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
 
   return (
     <li>

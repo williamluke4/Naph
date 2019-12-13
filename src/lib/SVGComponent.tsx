@@ -1,6 +1,9 @@
 import React from "react";
 
-const SVGComponent:React.FC<{childRef: any, children?: React.ReactNode} & React.SVGProps<SVGSVGElement>> = ({ children, childRef, ...rest }) => {
+const SVGComponent: React.FC<{
+  childRef: any;
+  children?: React.ReactNode;
+} & React.SVGProps<SVGSVGElement>> = ({ children, childRef, ...rest }) => {
   return (
     <svg
       style={{ position: "absolute", zIndex: 9000 }}

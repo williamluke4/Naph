@@ -4,14 +4,11 @@ interface TrashIconProps {
   position: any;
 }
 const TrashIcon = ({ onClick, position }: TrashIconProps) => {
-  const handleClick = useCallback(
-    e => {
-      if (onClick) {
-        onClick(e);
-      }
-    },
-    [onClick]
-  );
+  const handleClick = (e: any) => {
+    if (onClick) {
+      onClick(e);
+    }
+  };
 
   return (
     <g

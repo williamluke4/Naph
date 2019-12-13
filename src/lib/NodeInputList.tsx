@@ -7,12 +7,9 @@ interface NodeInputListProps {
     items: Item[];
 }
 const NodeInputList = ({ onCompleteConnector, items }: NodeInputListProps) => {
-  const handleMouseUp = useCallback(
-    i => {
-      onCompleteConnector(i);
-    },
-    [onCompleteConnector]
-  );
+  const handleMouseUp = (i: number) => {
+    onCompleteConnector(i);
+  }
 
   return (
     <div className="nodeInputWrapper">
@@ -21,7 +18,7 @@ const NodeInputList = ({ onCompleteConnector, items }: NodeInputListProps) => {
           <NodeInputListItem
             onMouseUp={handleMouseUp}
             key={index}
-            index={index + 1}
+            index={index}
             item={item}
           />
         ))}

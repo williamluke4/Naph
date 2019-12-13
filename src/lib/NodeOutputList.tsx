@@ -7,13 +7,9 @@ interface NodeOutputListProps {
   items: Item[];
 }
 const NodeOutputList = ({ onStartConnector, items }: NodeOutputListProps) => {
-  const onMouseDown = useCallback(
-    i => {
-      onStartConnector(i);
-    },
-    [onStartConnector]
-  );
-
+  const onMouseDown = (i: number) => {
+    onStartConnector(i);
+  }
   return (
     <div className="nodeOutputWrapper">
       <ul className="nodeOutputList">
@@ -21,7 +17,7 @@ const NodeOutputList = ({ onStartConnector, items }: NodeOutputListProps) => {
           <NodeOutputListItem
             key={index}
             onMouseDown={onMouseDown}
-            index={index + 1}
+            index={index}
             item={item}
           />
         ))}

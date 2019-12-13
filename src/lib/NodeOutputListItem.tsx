@@ -7,17 +7,16 @@ interface NodeOutputListItemProps {
   item: Item;
 }
 const NodeOutputListItem = ({ onMouseDown, index, item }: NodeOutputListItemProps) => {
-  const handleMouseDown = useCallback(e => {
+  const handleMouseDown = (e: any) => {
     e.stopPropagation();
     e.preventDefault();
 
     onMouseDown(index);
-  }, []);
-
-  const noop = useCallback(e => {
+  }
+  const noop = (e: any) => {
     e.stopPropagation();
     e.preventDefault();
-  }, []);
+  }
 
   return (
     <li onMouseDown={handleMouseDown}>
