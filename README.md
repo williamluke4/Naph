@@ -1,6 +1,10 @@
-
 # Naph 
 
+<p align="center">
+  <img src="./Naph.png"/>
+</p>
+
+[![npm version](https://badge.fury.io/js/naph.svg)](https://badge.fury.io/js/naph)
 ## Install
 
 #### Npm:
