@@ -1,3 +1,15 @@
+# v0.2.2 (Fri Dec 13 2019)
+
+#### 🐛  Bug Fix
+
+- fix(Misc): Npm Repo Link and Export Types  (william@ordino.ai)
+
+#### Authors: 1
+
+- William Luke (william@ordino.ai)
+
+---
+
 # v0.2.1 (Fri Dec 13 2019)
 
 #### 🐛  Bug Fix
