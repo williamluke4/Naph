@@ -3,8 +3,9 @@ import * as React from 'react';
 // import ReactNodeGraph from 'react-node-graph'; 
 
 import ReactNodeGraph from '../src';
+import { Data, Connection } from '../src/types';
 
-var exampleGraph = {
+var exampleGraph: Data = {
   "nodes":[
     {"nid":1,"type":"WebGLRenderer","x":1479,"y":351,"fields":{"in":[{"name":"width"},{"name":"height"},{"name":"scene"},{"name":"camera"},{"name":"bg_color"},{"name":"postfx"},{"name":"shadowCameraNear"},{"name":"shadowCameraFar"},{"name":"shadowMapWidth"},{"name":"shadowMapHeight"},{"name":"shadowMapEnabled"},{"name":"shadowMapSoft"}],"out":[]}},
     {"nid":14,"type":"Camera","x":549,"y":478,"fields":{"in":[{"name":"fov"},{"name":"aspect"},{"name":"near"},{"name":"far"},{"name":"position"},{"name":"target"},{"name":"useTarget"}],"out":[{"name":"out"}]}},
@@ -32,18 +33,18 @@ var exampleGraph = {
 };
 
 export default () => {
-  const [state, setState] = React.useState(exampleGraph);
+  const [state, setState] = React.useState<Data>(exampleGraph);
   
 
-  function onNewConnector(fromNode: number,fromPin: number,toNode: number,toPin: number) {
+  function onNewConnector(fromNode: number,fromPin: string,toNode: number,toPin: string) {
     let connections = [...state.connections, {
       from_node : fromNode,
       from : fromPin,
       to_node : toNode,
       to : toPin
-    }]
+    } as Connection]
 
-    setState({connections: connections})
+    setState({...state, connections: connections})
   }
 
   function onRemoveConnector(connector) {
@@ -52,7 +53,7 @@ export default () => {
       return connection != connector
     })
 
-    setState({connections: connections})
+    setState({...state, connections: connections})
   }
 
   function onNodeMove(nid, pos) { 
