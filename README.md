@@ -7,12 +7,11 @@
 
 #### Npm:
 ```sh
-npm install --save react-node-graph
+npm install --save naph
 ```
 
 ## Usage
 
-node data should follow this structure (ripped from https://github.com/idflood/ThreeNodes.js):
 
 ```js
 

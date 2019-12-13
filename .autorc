@@ -1,0 +1,8 @@
+{
+  "owner": "williamluke4",
+  "repo": "naph",
+  "plugins": [
+    "npm",
+    "conventional-commits"
+  ]
+}
