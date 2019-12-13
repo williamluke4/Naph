@@ -1,9 +1,9 @@
 {
   "name": "naph",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "UI for rendering Node Graphs.",
   "main": "build/index.js",
-  "files":[
+  "files": [
     "build/**/*",
     "src/**/*"
   ],
