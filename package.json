@@ -33,7 +33,7 @@
   "scripts": {
     "build:src": "tsc -d",
     "build:example": "parcel build example/index.html",
-    "build": "yarn build:src && yarn build:example",
+    "build": "npm run build:src && npm run build:example",
     "release": "auto shipit",
     "dev": "parcel example/index.html"
   },
