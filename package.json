@@ -1,6 +1,6 @@
 {
   "name": "naph",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "UI for rendering Node Graphs.",
   "main": "build/index.js",
   "peerDependencies": {
