@@ -36391,8 +36391,116 @@ function useObjectState(initialState) {
 }
 
 exports.useObjectState = useObjectState;
-},{"react":"../node_modules/react/index.js"}],"../src/index.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"../src/context.tsx":[function(require,module,exports) {
 "use strict";
+
+var __spreadArrays = this && this.__spreadArrays || function () {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
+    s += arguments[i].length;
+  }
+
+  for (var r = Array(s), k = 0, i = 0; i < il; i++) {
+    for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
+      r[k] = a[j];
+    }
+  }
+
+  return r;
+};
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var React = __importStar(require("react"));
+
+exports.NaphContext = React.createContext({});
+
+exports.NaphProvider = function (props) {
+  var _a = React.useState(props.data.connections),
+      connections = _a[0],
+      setConnections = _a[1];
+
+  var _b = React.useState(props.data.nodes),
+      nodes = _b[0],
+      setNodes = _b[1];
+
+  var _c = React.useState({
+    x: 0,
+    y: 0
+  }),
+      mousePos = _c[0],
+      setMousePos = _c[1];
+
+  var _d = React.useState([]),
+      source = _d[0],
+      setSource = _d[1];
+
+  var _e = React.useState(false),
+      dragging = _e[0],
+      setDragging = _e[1];
+
+  function addConnector(connection) {
+    var _connections = __spreadArrays(connections, [connection]);
+
+    setConnections(_connections);
+  }
+
+  function removeConnector(connector) {
+    var _connections = __spreadArrays(connections);
+
+    _connections = connections.filter(function (connection) {
+      return connection != connector;
+    });
+    setConnections(_connections);
+  }
+
+  React.useEffect(function () {
+    setConnections(props.data.connections);
+    setNodes(props.data.nodes);
+  }, [props.data]);
+  var store = {
+    addConnector: addConnector,
+    removeConnector: removeConnector,
+    connections: connections,
+    setConnections: setConnections,
+    nodes: nodes,
+    setNodes: setNodes,
+    mousePos: mousePos,
+    setMousePos: setMousePos,
+    source: source,
+    setSource: setSource,
+    dragging: dragging,
+    setDragging: setDragging
+  };
+  return React.createElement(exports.NaphContext.Provider, {
+    value: store
+  }, props.children);
+};
+},{"react":"../node_modules/react/index.js"}],"../src/types.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+},{}],"../src/index.tsx":[function(require,module,exports) {
+"use strict";
+
+function __export(m) {
+  for (var p in m) {
+    if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+  }
+}
 
 var __importStar = this && this.__importStar || function (mod) {
   if (mod && mod.__esModule) return mod;
@@ -36426,7 +36534,9 @@ var Node_1 = __importDefault(require("./lib/Node"));
 
 var util_1 = require("./lib/util");
 
-var getNodebyId = function getNodebyId(nodes, nid) {
+var context_1 = require("./context");
+
+exports.getNodebyId = function (nodes, nid) {
   var reval = 0;
 
   for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
@@ -36441,40 +36551,17 @@ var getNodebyId = function getNodebyId(nodes, nid) {
 };
 
 var ReactNodeGraph = function ReactNodeGraph(_a) {
-  var data = _a.data,
-      onNodeStartMove = _a.onNodeStartMove,
+  var onNodeStartMove = _a.onNodeStartMove,
       onNodeMove = _a.onNodeMove,
       onNodeSelect = _a.onNodeSelect,
       onNodeDeselect = _a.onNodeDeselect,
       onNewConnector = _a.onNewConnector,
       onRemoveConnector = _a.onRemoveConnector;
-
-  var _b = react_1.useState(data),
-      sData = _b[0],
-      setData = _b[1];
-
-  var _c = react_1.useState({
-    x: 0,
-    y: 0
-  }),
-      mousePos = _c[0],
-      setMousePos = _c[1];
-
-  var _d = react_1.useState([]),
-      source = _d[0],
-      setSource = _d[1];
-
-  var _e = react_1.useState(false),
-      dragging = _e[0],
-      setDragging = _e[1];
-
+  var naphContext = react_1.default.useContext(context_1.NaphContext);
   var svgRef = react_1.useRef();
   react_1.useEffect(function () {
-    setData(data);
-  }, [data]);
-  react_1.useEffect(function () {
     function handleMouseUp() {
-      setDragging(false);
+      naphContext.setDragging(false);
     }
 
     function handleMouseMove(e) {
@@ -36482,7 +36569,7 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
       e.preventDefault(); //Get svg element position to substract offset top and left
 
       var svgRect = svgRef.current.getBoundingClientRect();
-      setMousePos({
+      naphContext.setMousePos({
         x: e.pageX - svgRect.left,
         y: e.pageY - svgRect.top
       });
@@ -36496,37 +36583,50 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
     };
   }, []);
   var handleNodeStart = onNodeStartMove;
-  var handleNodeStop = onNodeMove;
+
+  var handleNodeStop = function handleNodeStop() {
+    return null;
+  }; //onNodeStop;
+
 
   var handleNodeMove = function handleNodeMove(nodeIndex, pos) {
-    var d = lodash_clonedeep_1.default(sData);
-    d.nodes[nodeIndex].x = pos.x;
-    d.nodes[nodeIndex].y = pos.y;
-    setData(d);
+    var nodes = lodash_clonedeep_1.default(naphContext.nodes);
+    nodes[nodeIndex].x = pos.x;
+    nodes[nodeIndex].y = pos.y;
+    onNodeMove(nodeIndex, pos);
+    naphContext.setNodes(nodes);
   };
 
   var handleStartConnector = function handleStartConnector(nid, outputIndex) {
-    setDragging(true);
-    setSource([nid, outputIndex]);
+    naphContext.setDragging(true);
+    naphContext.setSource([nid, outputIndex]);
   };
 
   var handleCompleteConnector = function handleCompleteConnector(nid, inputIndex) {
-    if (dragging) {
-      var nodes = sData.nodes;
-      var fromNode = getNodebyId(nodes, source[0]);
-      var toNode = getNodebyId(nodes, nid);
+    if (naphContext.dragging) {
+      var nodes = naphContext.nodes;
+      var fromNode = exports.getNodebyId(nodes, naphContext.source[0]);
+      var toNode = exports.getNodebyId(nodes, nid);
 
       if (fromNode && toNode) {
-        var fromPinName = fromNode && fromNode.fields.out[source[1]].name;
+        var fromPinName = fromNode && fromNode.fields.out[naphContext.source[1]].name;
         var toPinName = toNode.fields.in[inputIndex].name;
+        naphContext.addConnector({
+          from: fromPinName,
+          from_node: fromNode.nid,
+          to: toPinName,
+          to_node: toNode.nid
+        });
         onNewConnector(fromNode.nid, fromPinName, toNode.nid, toPinName);
       }
     }
 
-    setDragging(false);
+    naphContext.setDragging(false);
   };
 
   var handleRemoveConnector = function handleRemoveConnector(connector) {
+    naphContext.removeConnector(connector);
+
     if (onRemoveConnector) {
       onRemoveConnector(connector);
     }
@@ -36559,19 +36659,16 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
   };
 
   var renderComponents = function renderComponents() {
-    var nodes = sData.nodes;
-    var connectors = sData.connections;
+    var nodes = naphContext.nodes;
+    var connectors = naphContext.connections;
     var newConnector = null;
 
-    if (dragging) {
-      var sourceNode = getNodebyId(nodes, source[0]);
+    if (naphContext.dragging) {
+      var sourceNode = exports.getNodebyId(nodes, naphContext.source[0]);
 
       if (sourceNode) {
-        var connectorStart = util_1.computeOutOffsetByIndex(sourceNode.x, sourceNode.y, source[1]);
-        var connectorEnd = {
-          x: mousePos.x,
-          y: mousePos.y
-        };
+        var connectorStart = util_1.computeOutOffsetByIndex(sourceNode.x, sourceNode.y, naphContext.source[1]);
+        var connectorEnd = naphContext.mousePos;
         newConnector = react_1.default.createElement(Spline_1.default, {
           start: connectorStart,
           end: connectorEnd
@@ -36580,7 +36677,7 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
     }
 
     return react_1.default.createElement("div", {
-      className: dragging ? "dragging" : ""
+      className: naphContext.dragging ? "dragging" : ""
     }, nodes.map(function (node, i) {
       return react_1.default.createElement(Node_1.default, {
         index: i,
@@ -36605,9 +36702,9 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
       height: "100%",
       width: "100%",
       childRef: svgRef
-    }, connectors.map(function (connector, connectorIndex) {
-      var fromNode = getNodebyId(nodes, connector.from_node);
-      var toNode = getNodebyId(nodes, connector.to_node);
+    }, naphContext.connections.map(function (connector, connectorIndex) {
+      var fromNode = exports.getNodebyId(nodes, connector.from_node);
+      var toNode = exports.getNodebyId(nodes, connector.to_node);
 
       if (fromNode && toNode) {
         var startPinIndex = computePinIndexfromLabel(fromNode.fields.out, connector.from);
@@ -36620,7 +36717,7 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
             start: splineStart,
             end: splineEnd,
             key: connectorIndex,
-            mousePos: mousePos,
+            mousePos: naphContext.mousePos,
             onRemove: function onRemove() {
               return handleRemoveConnector(connector);
             }
@@ -36635,23 +36732,13 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
   return renderComponents();
 };
 
+__export(require("./types"));
+
+__export(require("./context"));
+
 exports.default = react_1.default.memo(ReactNodeGraph);
-},{"react":"../node_modules/react/index.js","lodash.clonedeep":"../node_modules/lodash.clonedeep/index.js","./lib/Spline":"../src/lib/Spline.tsx","./lib/SVGComponent":"../src/lib/SVGComponent.tsx","./lib/Node":"../src/lib/Node.tsx","./lib/util":"../src/lib/util.tsx"}],"App.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","lodash.clonedeep":"../node_modules/lodash.clonedeep/index.js","./lib/Spline":"../src/lib/Spline.tsx","./lib/SVGComponent":"../src/lib/SVGComponent.tsx","./lib/Node":"../src/lib/Node.tsx","./lib/util":"../src/lib/util.tsx","./context":"../src/context.tsx","./types":"../src/types.ts"}],"App.tsx":[function(require,module,exports) {
 "use strict";
-
-var __spreadArrays = this && this.__spreadArrays || function () {
-  for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
-    s += arguments[i].length;
-  }
-
-  for (var r = Array(s), k = 0, i = 0; i < il; i++) {
-    for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
-      r[k] = a[j];
-    }
-  }
-
-  return r;
-};
 
 var __importStar = this && this.__importStar || function (mod) {
   if (mod && mod.__esModule) return mod;
@@ -36663,20 +36750,13 @@ var __importStar = this && this.__importStar || function (mod) {
   return result;
 };
 
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var React = __importStar(require("react")); // import ReactNodeGraph from 'react-node-graph'; 
+var React = __importStar(require("react"));
 
-
-var src_1 = __importDefault(require("../src"));
+var src_1 = __importStar(require("../src"));
 
 var exampleGraph = {
   "nodes": [{
@@ -36929,55 +37009,10 @@ var exampleGraph = {
     }
   }],
   "connections": [{
-    "from_node": 23,
-    "from": "out",
-    "to_node": 1,
-    "to": "scene"
-  }, {
-    "from_node": 14,
-    "from": "out",
-    "to_node": 1,
-    "to": "camera"
-  }, {
-    "from_node": 14,
-    "from": "out",
-    "to_node": 35,
-    "to": "in5"
-  }, {
-    "from_node": 35,
-    "from": "out",
-    "to_node": 23,
-    "to": "children"
-  }, {
-    "from_node": 45,
-    "from": "rgb",
-    "to_node": 1,
-    "to": "bg_color"
-  }, {
     "from_node": 55,
     "from": "xyz",
     "to_node": 14,
     "to": "position"
-  }, {
-    "from_node": 65,
-    "from": "out",
-    "to_node": 35,
-    "to": "in0"
-  }, {
-    "from_node": 79,
-    "from": "out",
-    "to_node": 84,
-    "to": "in"
-  }, {
-    "from_node": 89,
-    "from": "xyz",
-    "to_node": 65,
-    "to": "rotation"
-  }, {
-    "from_node": 84,
-    "from": "out",
-    "to_node": 89,
-    "to": "y"
   }]
 };
 
@@ -36991,23 +37026,11 @@ exports.default = function () {
       setConnections = _b[1];
 
   function _onNewConnector(fromNode, fromPin, toNode, toPin) {
-    var _connections = __spreadArrays(connections, [{
-      from_node: fromNode,
-      from: fromPin,
-      to_node: toNode,
-      to: toPin
-    }]);
-
-    setConnections(_connections);
+    console.log("New Connector Added");
   }
 
   function _onRemoveConnector(connector) {
-    var _connections = __spreadArrays(connections);
-
-    _connections = connections.filter(function (connection) {
-      return connection != connector;
-    });
-    setConnections(_connections);
+    console.log("Connector Removed");
   }
 
   function _onNodeMove(nid, pos) {
@@ -37026,11 +37049,9 @@ exports.default = function () {
     console.log('node deselected : ' + nid);
   }
 
-  return React.createElement(src_1.default, {
-    data: {
-      connections: connections,
-      nodes: nodes
-    },
+  return React.createElement(src_1.NaphProvider, {
+    data: exampleGraph
+  }, React.createElement(src_1.default, {
     onNodeMove: function onNodeMove(nid, pos) {
       return _onNodeMove(nid, pos);
     },
@@ -37049,7 +37070,7 @@ exports.default = function () {
     onNodeDeselect: function onNodeDeselect(nid) {
       handleNodeDeselect(nid);
     }
-  });
+  }));
 };
 },{"react":"../node_modules/react/index.js","../src":"../src/index.tsx"}],"index.tsx":[function(require,module,exports) {
 "use strict";
@@ -37099,7 +37120,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33445" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46749" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

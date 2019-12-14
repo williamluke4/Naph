@@ -7,7 +7,7 @@
 [![npm version](https://badge.fury.io/js/naph.svg)](https://badge.fury.io/js/naph)
 ## Install
 
-#### Npm:
+#### NPM:
 ```sh
 npm install --save naph
 ```
@@ -16,7 +16,7 @@ npm install --save naph
 
 
 ```js
-import ReactNodeGraph from 'naph';
+import NaphGraph, { NaphProvider } from 'naph';
 
 const example = {
   "nodes":[
@@ -35,13 +35,16 @@ and passed to our component
 
 ```js
 
-<ReactNodeGraph 
-  data={example} 
-  onNodeMove={(nid, pos)=>this.onNodeMove(nid, pos)}
-  onNodeStartMove={(nid)=>this.onNodeStartMove(nid)}
-  onNewConnector={(n1,o,n2,i)=>this.onNewConnector(n1,o,n2,i)} 
-  onRemoveConnector={(connector)=>this.onRemoveConnector(connector)}
-/>
+ <NaphProvider data={exampleGraph}>
+  <NaphGraph 
+    onNodeMove={(nid, pos)=>onNodeMove(nid, pos)}
+    onNodeStartMove={(nid)=>onNodeStartMove(nid)}
+    onNewConnector={(n1,o,n2,i)=>onNewConnector(n1,o,n2,i)}
+    onRemoveConnector={(connector)=>onRemoveConnector(connector)}
+    onNodeSelect={(nid) => {handleNodeSelect(nid)}}
+    onNodeDeselect={(nid) => {handleNodeDeselect(nid)}}
+  />
+</NaphProvider>
 
 ```
 

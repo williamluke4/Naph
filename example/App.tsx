@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-// import ReactNodeGraph from 'react-node-graph'; 
 
-import ReactNodeGraph from '../src';
+import NaphGraph, { NaphContext, NaphProvider } from '../src';
 import { Data, Connection, NodeType } from '../src/types';
 
 var exampleGraph: Data = {
@@ -33,27 +32,12 @@ var exampleGraph: Data = {
 };
 
 export default () => {
-  const [nodes, setNodes] = React.useState<NodeType[]>(exampleGraph.nodes);
-  const [connections, setConnections] = React.useState<Connection[]>(exampleGraph.connections);
-
   function onNewConnector(fromNode: number,fromPin: string,toNode: number,toPin: string) {
-    let _connections = [...connections, {
-      from_node : fromNode,
-      from : fromPin,
-      to_node : toNode,
-      to : toPin
-    } as Connection]
-
-    setConnections(_connections)
+    console.log("New Connector Added");
   }
 
   function onRemoveConnector(connector) {
-    let _connections = [...connections]
-    _connections = connections.filter((connection) => {
-      return connection != connector
-    })
-
-    setConnections(_connections)
+    console.log("Connector Removed");
   }
 
   function onNodeMove(nid, pos) { 
@@ -73,11 +57,9 @@ export default () => {
   }
 
   return (
-      <ReactNodeGraph 
-        data={{
-          connections,
-          nodes
-        }} 
+    <NaphProvider data={exampleGraph}>
+
+      <NaphGraph 
         onNodeMove={(nid, pos)=>onNodeMove(nid, pos)}
         onNodeStartMove={(nid)=>onNodeStartMove(nid)}
         onNewConnector={(n1,o,n2,i)=>onNewConnector(n1,o,n2,i)}
@@ -85,5 +67,7 @@ export default () => {
         onNodeSelect={(nid) => {handleNodeSelect(nid)}}
         onNodeDeselect={(nid) => {handleNodeDeselect(nid)}}
       />
+    </NaphProvider>
+
   );      
 }

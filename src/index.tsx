@@ -7,10 +7,10 @@ import { NodeType, Data, Position, Field, Connection } from "./types";
 import {
   computeOutOffsetByIndex,
   computeInOffsetByIndex,
-  useObjectState
 } from "./lib/util";
+import { NaphContext } from "./context";
 
-const getNodebyId = (nodes: NodeType[], nid: number) => {
+export const getNodebyId = (nodes: NodeType[], nid: number) => {
   let reval = 0;
 
   for (let node of nodes) {
@@ -22,7 +22,6 @@ const getNodebyId = (nodes: NodeType[], nid: number) => {
   }
 };
 interface ReactNodeGraphProps {
-  data: Data;
   onNodeStartMove: (nid: number) => void;
   onNodeMove: (nid: number, position: Position) => void;
   onNodeSelect: (nid: number) => void;
@@ -36,7 +35,6 @@ interface ReactNodeGraphProps {
   onRemoveConnector: (connector: Connection) => void;
 }
 const ReactNodeGraph = ({
-  data,
   onNodeStartMove,
   onNodeMove,
   onNodeSelect,
@@ -44,20 +42,11 @@ const ReactNodeGraph = ({
   onNewConnector,
   onRemoveConnector
 }: ReactNodeGraphProps) => {
-  const [sData, setData] = useState(data);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [source, setSource] = useState([] as number[]);
-  const [dragging, setDragging] = useState(false);
-
+  const naphContext = React.useContext(NaphContext);
   const svgRef = useRef() as React.MutableRefObject<SVGElement>;
-
-  useEffect(() => {
-    setData(data);
-  }, [data]);
-
   useEffect(() => {
     function handleMouseUp() {
-      setDragging(false);
+      naphContext.setDragging(false);
     }
 
     function handleMouseMove(e: MouseEvent) {
@@ -67,7 +56,7 @@ const ReactNodeGraph = ({
       //Get svg element position to substract offset top and left
       const svgRect = svgRef.current.getBoundingClientRect();
 
-      setMousePos({
+      naphContext.setMousePos({
         x: e.pageX - svgRect.left,
         y: e.pageY - svgRect.top
       });
@@ -83,38 +72,46 @@ const ReactNodeGraph = ({
   }, []);
 
   const handleNodeStart = onNodeStartMove;
-  const handleNodeStop = onNodeMove;
+  const handleNodeStop = () => null;
+  //onNodeStop;
 
   const handleNodeMove = (nodeIndex: number, pos: Position) => {
-    let d = cloneDeep(sData);
+    let nodes = cloneDeep(naphContext.nodes);
 
-    d.nodes[nodeIndex].x = pos.x;
-    d.nodes[nodeIndex].y = pos.y;
-
-    setData(d);
+    nodes[nodeIndex].x = pos.x;
+    nodes[nodeIndex].y = pos.y;
+    onNodeMove(nodeIndex, pos)
+    naphContext.setNodes(nodes);
   };
 
   const handleStartConnector = (nid: number, outputIndex: number) => {
-    setDragging(true);
-    setSource([nid, outputIndex]);
+    naphContext.setDragging(true);
+    naphContext.setSource([nid, outputIndex]);
   };
 
   const handleCompleteConnector = (nid: number, inputIndex: number) => {
-    if (dragging) {
-      let nodes = sData.nodes;
-      let fromNode = getNodebyId(nodes, source[0]);
+    if (naphContext.dragging) {
+      let nodes = naphContext.nodes;
+      let fromNode = getNodebyId(nodes, naphContext.source[0]);
       let toNode = getNodebyId(nodes, nid);
       if (fromNode && toNode) {
-        let fromPinName = fromNode && fromNode.fields.out[source[1]].name;
+        let fromPinName = fromNode && fromNode.fields.out[naphContext.source[1]].name;
         let toPinName = toNode.fields.in[inputIndex].name;
+        naphContext.addConnector({
+          from: fromPinName,
+          from_node: fromNode.nid,
+          to: toPinName,
+          to_node: toNode.nid
+        })
         onNewConnector(fromNode.nid, fromPinName, toNode.nid, toPinName);
       }
     }
 
-    setDragging(false);
+    naphContext.setDragging(false);
   };
 
   const handleRemoveConnector = (connector: Connection) => {
+    naphContext.removeConnector(connector)
     if (onRemoveConnector) {
       onRemoveConnector(connector);
     }
@@ -145,26 +142,25 @@ const ReactNodeGraph = ({
   };
 
   const renderComponents = () => {
-    let nodes = sData.nodes;
-    let connectors = sData.connections;
+    let nodes = naphContext.nodes;
     let newConnector = null;
 
-    if (dragging) {
-      let sourceNode = getNodebyId(nodes, source[0]);
+    if (naphContext.dragging) {
+      let sourceNode = getNodebyId(nodes, naphContext.source[0]);
       if (sourceNode) {
         let connectorStart = computeOutOffsetByIndex(
           sourceNode.x,
           sourceNode.y,
-          source[1]
+          naphContext.source[1]
         );
-        let connectorEnd = { x: mousePos.x, y: mousePos.y };
+        let connectorEnd = naphContext.mousePos;
 
         newConnector = <Spline start={connectorStart} end={connectorEnd} />;
       }
     }
 
     return (
-      <div className={dragging ? "dragging" : ""}>
+      <div className={naphContext.dragging ? "dragging" : ""}>
         {nodes.map((node, i) => {
           return (
             <Node
@@ -189,7 +185,7 @@ const ReactNodeGraph = ({
         {/* render our connectors */}
 
         <SVGComponent height="100%" width="100%" childRef={svgRef}>
-          {connectors.map((connector, connectorIndex) => {
+          {naphContext.connections.map((connector, connectorIndex) => {
             const fromNode = getNodebyId(nodes, connector.from_node);
             const toNode = getNodebyId(nodes, connector.to_node);
             if (fromNode && toNode) {
@@ -220,7 +216,7 @@ const ReactNodeGraph = ({
                     start={splineStart}
                     end={splineEnd}
                     key={connectorIndex}
-                    mousePos={mousePos}
+                    mousePos={naphContext.mousePos}
                     onRemove={() => handleRemoveConnector(connector)}
                   />
                 );
@@ -238,4 +234,6 @@ const ReactNodeGraph = ({
   return renderComponents();
 };
 export * from './types';
+export * from './context';
+
 export default React.memo(ReactNodeGraph);
