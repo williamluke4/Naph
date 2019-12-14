@@ -1,3 +1,15 @@
+# v0.3.0 (Sat Dec 14 2019)
+
+#### 🚀  Enhancement
+
+- feat: Migrate to Context based State  (william@ordino.ai)
+
+#### Authors: 1
+
+- William Luke (william@ordino.ai)
+
+---
+
 # v0.2.2 (Fri Dec 13 2019)
 
 #### 🐛  Bug Fix
