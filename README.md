@@ -1,4 +1,5 @@
 # Naph 
+## Experimental - *Use at your own peril!*
 
 <p align="center">
   <img src="./Naph.png"/>
@@ -15,7 +16,7 @@ npm install --save naph
 ## Usage
 
 
-```js
+```jsx
 import NaphGraph, { NaphProvider } from 'naph';
 
 const example = {
@@ -29,22 +30,18 @@ const example = {
   ]
 };
 
-```
-
-and passed to our component
-
-```js
-
- <NaphProvider data={exampleGraph}>
-  <NaphGraph 
-    onNodeMove={(nid, pos)=>onNodeMove(nid, pos)}
-    onNodeStartMove={(nid)=>onNodeStartMove(nid)}
-    onNewConnector={(n1,o,n2,i)=>onNewConnector(n1,o,n2,i)}
-    onRemoveConnector={(connector)=>onRemoveConnector(connector)}
-    onNodeSelect={(nid) => {handleNodeSelect(nid)}}
-    onNodeDeselect={(nid) => {handleNodeDeselect(nid)}}
-  />
-</NaphProvider>
+export const Naph = () => ( 
+  <NaphProvider data={example}>
+    <NaphGraph 
+      onNodeMove={(nid, pos)=>onNodeMove(nid, pos)}
+      onNodeStartMove={(nid)=>onNodeStartMove(nid)}
+      onNewConnector={(n1,o,n2,i)=>onNewConnector(n1,o,n2,i)}
+      onRemoveConnector={(connector)=>onRemoveConnector(connector)}
+      onNodeSelect={(nid) => {handleNodeSelect(nid)}}
+      onNodeDeselect={(nid) => {handleNodeDeselect(nid)}}
+    />
+  </NaphProvider>
+);
 
 ```
 
