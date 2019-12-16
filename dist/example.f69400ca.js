@@ -36004,7 +36004,7 @@ var global = arguments[3];
 })));
 
 
-},{"react-dom":"../node_modules/react-dom/index.js","react":"../node_modules/react/index.js"}],"../src/lib/NodeInputListItem.tsx":[function(require,module,exports) {
+},{"react-dom":"../node_modules/react-dom/index.js","react":"../node_modules/react/index.js"}],"../src/lib/NodeField.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -36023,19 +36023,18 @@ Object.defineProperty(exports, "__esModule", {
 
 var react_1 = __importStar(require("react"));
 
-var NodeInputListItem = function NodeInputListItem(_a) {
-  var index = _a.index,
-      onMouseUp = _a.onMouseUp,
-      item = _a.item;
+var NodeField = function NodeField(_a) {
+  var onMouseUp = _a.onMouseUp,
+      onMouseDown = _a.onMouseDown,
+      field = _a.field;
 
   var _b = react_1.useState(false),
       isHover = _b[0],
       setHover = _b[1];
 
   var handleMouseUp = function handleMouseUp(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    onMouseUp(index);
+    noop(e);
+    onMouseUp(field);
   };
 
   var handleMouseOver = function handleMouseOver() {
@@ -36046,106 +36045,50 @@ var NodeInputListItem = function NodeInputListItem(_a) {
     setHover(false);
   };
 
+  var handleMouseDown = function handleMouseDown(e) {
+    noop(e);
+    onMouseDown(field);
+  };
+
   var noop = function noop(e) {
     e.stopPropagation();
     e.preventDefault();
-  };
-
-  return react_1.default.createElement("li", null, react_1.default.createElement("a", {
-    onClick: noop,
-    onMouseUp: handleMouseUp,
-    href: "#"
-  }, react_1.default.createElement("i", {
-    className: isHover ? "fa fa-circle-o hover" : "fa fa-circle-o",
-    onMouseOver: handleMouseOver,
-    onMouseOut: handleMouseOut
-  }), item.name));
-};
-
-exports.default = react_1.default.memo(NodeInputListItem);
-},{"react":"../node_modules/react/index.js"}],"../src/lib/NodeInputList.tsx":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var NodeInputListItem_1 = __importDefault(require("./NodeInputListItem"));
-
-var NodeInputList = function NodeInputList(_a) {
-  var onCompleteConnector = _a.onCompleteConnector,
-      items = _a.items;
-
-  var handleMouseUp = function handleMouseUp(i) {
-    onCompleteConnector(i);
   };
 
   return react_1.default.createElement("div", {
-    className: "nodeInputWrapper"
-  }, react_1.default.createElement("ul", {
-    className: "nodeInputList"
-  }, items.map(function (item, index) {
-    return react_1.default.createElement(NodeInputListItem_1.default, {
-      onMouseUp: handleMouseUp,
-      key: index,
-      index: index,
-      item: item
-    });
-  })));
-};
-
-exports.default = react_1.default.memo(NodeInputList);
-},{"react":"../node_modules/react/index.js","./NodeInputListItem":"../src/lib/NodeInputListItem.tsx"}],"../src/lib/NodeOutputListItem.tsx":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var NodeOutputListItem = function NodeOutputListItem(_a) {
-  var onMouseDown = _a.onMouseDown,
-      index = _a.index,
-      item = _a.item;
-
-  var handleMouseDown = function handleMouseDown(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    onMouseDown(index);
-  };
-
-  var noop = function noop(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  };
-
-  return react_1.default.createElement("li", {
+    style: {
+      width: '100%',
+      height: '20px',
+      display: 'grid',
+      gridTemplateColumns: "1fr 1fr"
+    }
+  }, react_1.default.createElement("div", {
+    onClick: noop,
+    onMouseUp: handleMouseUp
+  }, react_1.default.createElement("i", {
+    style: {
+      marginRight: 5
+    },
+    className: isHover ? "fa fa-circle-o hover" : "fa fa-circle-o",
+    onMouseOver: handleMouseOver,
+    onMouseOut: handleMouseOut
+  }), field.name), react_1.default.createElement("div", {
+    style: {
+      marginLeft: 'auto',
+      color: '#808080'
+    },
+    onClick: noop,
     onMouseDown: handleMouseDown
-  }, react_1.default.createElement("a", {
-    href: "#",
-    onClick: noop
-  }, item.name, react_1.default.createElement("i", {
+  }, field.type, react_1.default.createElement("i", {
+    style: {
+      marginLeft: 5
+    },
     className: "fa fa-circle-o"
   })));
 };
 
-exports.default = react_1.default.memo(NodeOutputListItem);
-},{"react":"../node_modules/react/index.js"}],"../src/lib/NodeOutputList.tsx":[function(require,module,exports) {
+exports.default = react_1.default.memo(NodeField);
+},{"react":"../node_modules/react/index.js"}],"../src/lib/NodeFields.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -36160,32 +36103,37 @@ Object.defineProperty(exports, "__esModule", {
 
 var react_1 = __importDefault(require("react"));
 
-var NodeOutputListItem_1 = __importDefault(require("./NodeOutputListItem"));
+var NodeField_1 = __importDefault(require("./NodeField"));
 
-var NodeOutputList = function NodeOutputList(_a) {
-  var onStartConnector = _a.onStartConnector,
-      items = _a.items;
+var NodeFieldsList = function NodeFieldsList(_a) {
+  var onCompleteConnector = _a.onCompleteConnector,
+      onStartConnector = _a.onStartConnector,
+      fields = _a.fields;
 
-  var onMouseDown = function onMouseDown(i) {
-    onStartConnector(i);
+  var handleMouseUp = function handleMouseUp(field) {
+    onCompleteConnector(field);
+  };
+
+  var handleMouseDown = function handleMouseDown(field) {
+    onStartConnector(field);
   };
 
   return react_1.default.createElement("div", {
-    className: "nodeOutputWrapper"
-  }, react_1.default.createElement("ul", {
-    className: "nodeOutputList"
-  }, items.map(function (item, index) {
-    return react_1.default.createElement(NodeOutputListItem_1.default, {
+    style: {
+      width: "100%"
+    }
+  }, fields.map(function (field, index) {
+    return react_1.default.createElement(NodeField_1.default, {
+      onMouseUp: handleMouseUp,
+      onMouseDown: handleMouseDown,
       key: index,
-      onMouseDown: onMouseDown,
-      index: index,
-      item: item
+      field: field
     });
-  })));
+  }));
 };
 
-exports.default = react_1.default.memo(NodeOutputList);
-},{"react":"../node_modules/react/index.js","./NodeOutputListItem":"../src/lib/NodeOutputListItem.tsx"}],"../src/lib/Node.tsx":[function(require,module,exports) {
+exports.default = react_1.default.memo(NodeFieldsList);
+},{"react":"../node_modules/react/index.js","./NodeField":"../src/lib/NodeField.tsx"}],"../src/lib/Node.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -36212,18 +36160,15 @@ var react_1 = __importStar(require("react"));
 
 var react_draggable_1 = __importDefault(require("react-draggable"));
 
-var NodeInputList_1 = __importDefault(require("./NodeInputList"));
-
-var NodeOutputList_1 = __importDefault(require("./NodeOutputList"));
-
 var useClickAway_1 = __importDefault(require("../hooks/useClickAway"));
+
+var NodeFields_1 = __importDefault(require("./NodeFields"));
 
 var Node = function Node(_a) {
   var nid = _a.nid,
       pos = _a.pos,
       title = _a.title,
-      inputs = _a.inputs,
-      outputs = _a.outputs,
+      fields = _a.fields,
       onNodeStart = _a.onNodeStart,
       onNodeStop = _a.onNodeStop,
       onNodeMove = _a.onNodeMove,
@@ -36257,12 +36202,12 @@ var Node = function Node(_a) {
     });
   };
 
-  var handleStartConnector = function handleStartConnector(index) {
-    onStartConnector(nid, index);
+  var handleStartConnector = function handleStartConnector(field) {
+    onStartConnector(nid, field);
   };
 
-  var handleCompleteConnector = function handleCompleteConnector(index) {
-    onCompleteConnector(nid, index);
+  var handleCompleteConnector = function handleCompleteConnector(field) {
+    onCompleteConnector(nid, field);
   };
 
   var handleClick = function handleClick() {
@@ -36280,7 +36225,7 @@ var Node = function Node(_a) {
 
     setSelected(false);
   });
-  var nodeClass = react_1.useMemo(function () {
+  var NodeClass = react_1.useMemo(function () {
     return "node" + (isSelected ? " selected" : "");
   }, [isSelected]);
   return react_1.default.createElement("div", {
@@ -36296,7 +36241,7 @@ var Node = function Node(_a) {
     onStop: handleDragStop,
     onDrag: handleDrag
   }, react_1.default.createElement("section", {
-    className: nodeClass,
+    className: NodeClass,
     style: {
       zIndex: 10000
     }
@@ -36306,17 +36251,15 @@ var Node = function Node(_a) {
     className: "node-title"
   }, title)), react_1.default.createElement("div", {
     className: "node-content"
-  }, react_1.default.createElement(NodeInputList_1.default, {
-    items: inputs,
-    onCompleteConnector: handleCompleteConnector
-  }), react_1.default.createElement(NodeOutputList_1.default, {
-    items: outputs,
+  }, react_1.default.createElement(NodeFields_1.default, {
+    fields: fields,
+    onCompleteConnector: handleCompleteConnector,
     onStartConnector: handleStartConnector
   })))));
 };
 
 exports.default = Node;
-},{"react":"../node_modules/react/index.js","react-draggable":"../node_modules/react-draggable/dist/react-draggable.js","./NodeInputList":"../src/lib/NodeInputList.tsx","./NodeOutputList":"../src/lib/NodeOutputList.tsx","../hooks/useClickAway":"../src/hooks/useClickAway.tsx"}],"../src/lib/util.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-draggable":"../node_modules/react-draggable/dist/react-draggable.js","../hooks/useClickAway":"../src/hooks/useClickAway.tsx","./NodeFields":"../src/lib/NodeFields.tsx"}],"../src/lib/util.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -36355,8 +36298,8 @@ function computeInOffsetByIndex(x, y, index) {
 exports.computeInOffsetByIndex = computeInOffsetByIndex;
 
 function computeOutOffsetByIndex(x, y, index) {
-  var outx = x + 166;
-  var outy = y + 49 + index * 22;
+  var outx = x + 180;
+  var outy = y + 49 + index * 20;
   return {
     x: outx,
     y: outy
@@ -36442,7 +36385,7 @@ exports.NaphProvider = function (props) {
       mousePos = _c[0],
       setMousePos = _c[1];
 
-  var _d = React.useState([]),
+  var _d = React.useState({}),
       source = _d[0],
       setSource = _d[1];
 
@@ -36597,27 +36540,35 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
     naphContext.setNodes(nodes);
   };
 
-  var handleStartConnector = function handleStartConnector(nid, outputIndex) {
+  var handleStartConnector = function handleStartConnector(nid, outputField) {
     naphContext.setDragging(true);
-    naphContext.setSource([nid, outputIndex]);
+    naphContext.setSource({
+      nid: nid,
+      field: outputField
+    });
   };
 
-  var handleCompleteConnector = function handleCompleteConnector(nid, inputIndex) {
+  var handleCompleteConnector = function handleCompleteConnector(nid, field) {
     if (naphContext.dragging) {
       var nodes = naphContext.nodes;
-      var fromNode = exports.getNodebyId(nodes, naphContext.source[0]);
+      var fromNode = exports.getNodebyId(nodes, naphContext.source.nid);
       var toNode = exports.getNodebyId(nodes, nid);
+      var fromField = fromNode && fromNode.fields.find(function (f) {
+        return f.name === naphContext.source.field.name;
+      });
+      var toField = toNode && toNode.fields.find(function (f) {
+        return f.name === field.name;
+      });
 
-      if (fromNode && toNode) {
-        var fromPinName = fromNode && fromNode.fields.out[naphContext.source[1]].name;
-        var toPinName = toNode.fields.in[inputIndex].name;
-        naphContext.addConnector({
-          from: fromPinName,
+      if (fromNode && toNode && fromField && toField) {
+        var newConnector = {
+          from_field: fromField,
           from_node: fromNode.nid,
-          to: toPinName,
+          to_field: toField,
           to_node: toNode.nid
-        });
-        onNewConnector(fromNode.nid, fromPinName, toNode.nid, toPinName);
+        };
+        naphContext.addConnector(newConnector);
+        onNewConnector(newConnector);
       }
     }
 
@@ -36644,13 +36595,13 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
     }
   };
 
-  var computePinIndexfromLabel = function computePinIndexfromLabel(pins, pinLabel) {
+  var computeFieldIndexfromFieldName = function computeFieldIndexfromFieldName(fields, field) {
     var reval = 0;
 
-    for (var _i = 0, pins_1 = pins; _i < pins_1.length; _i++) {
-      var pin = pins_1[_i];
+    for (var _i = 0, fields_1 = fields; _i < fields_1.length; _i++) {
+      var f = fields_1[_i];
 
-      if (pin.name === pinLabel) {
+      if (f.name === field.name) {
         return reval;
       } else {
         reval++;
@@ -36660,14 +36611,15 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
 
   var renderComponents = function renderComponents() {
     var nodes = naphContext.nodes;
-    var connectors = naphContext.connections;
     var newConnector = null;
 
     if (naphContext.dragging) {
-      var sourceNode = exports.getNodebyId(nodes, naphContext.source[0]);
+      var sourceNode = exports.getNodebyId(nodes, naphContext.source.nid);
 
       if (sourceNode) {
-        var connectorStart = util_1.computeOutOffsetByIndex(sourceNode.x, sourceNode.y, naphContext.source[1]);
+        var connectorStart = util_1.computeOutOffsetByIndex(sourceNode.x, sourceNode.y, sourceNode.fields.findIndex(function (f) {
+          return f.name === naphContext.source.field.name;
+        }));
         var connectorEnd = naphContext.mousePos;
         newConnector = react_1.default.createElement(Spline_1.default, {
           start: connectorStart,
@@ -36682,9 +36634,8 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
       return react_1.default.createElement(Node_1.default, {
         index: i,
         nid: node.nid,
-        title: node.type,
-        inputs: node.fields.in,
-        outputs: node.fields.out,
+        title: node.title,
+        fields: node.fields,
         pos: {
           x: node.x,
           y: node.y
@@ -36707,8 +36658,8 @@ var ReactNodeGraph = function ReactNodeGraph(_a) {
       var toNode = exports.getNodebyId(nodes, connector.to_node);
 
       if (fromNode && toNode) {
-        var startPinIndex = computePinIndexfromLabel(fromNode.fields.out, connector.from);
-        var endPinIndex = computePinIndexfromLabel(toNode.fields.in, connector.to);
+        var startPinIndex = computeFieldIndexfromFieldName(fromNode.fields, connector.from_field);
+        var endPinIndex = computeFieldIndexfromFieldName(toNode.fields, connector.to_field);
 
         if (typeof startPinIndex === "number" && typeof endPinIndex === "number") {
           var splineStart = util_1.computeOutOffsetByIndex(fromNode.x, fromNode.y, startPinIndex);
@@ -36761,292 +36712,115 @@ var src_1 = __importStar(require("../src"));
 var exampleGraph = {
   "nodes": [{
     "nid": 1,
-    "type": "WebGLRenderer",
-    "x": 1479,
-    "y": 351,
-    "fields": {
-      "in": [{
-        "name": "width"
-      }, {
-        "name": "height"
-      }, {
-        "name": "scene"
-      }, {
-        "name": "camera"
-      }, {
-        "name": "bg_color"
-      }, {
-        "name": "postfx"
-      }, {
-        "name": "shadowCameraNear"
-      }, {
-        "name": "shadowCameraFar"
-      }, {
-        "name": "shadowMapWidth"
-      }, {
-        "name": "shadowMapHeight"
-      }, {
-        "name": "shadowMapEnabled"
-      }, {
-        "name": "shadowMapSoft"
-      }],
-      "out": []
-    }
+    "title": "User",
+    "x": 50,
+    "y": 50,
+    "fields": [{
+      "name": "id",
+      "type": "@id"
+    }, {
+      "name": "firstname",
+      "type": "String"
+    }, {
+      "name": "surname",
+      "type": "String"
+    }, {
+      "name": "posts",
+      type: "Post[]"
+    }, {
+      "name": "comments",
+      type: "Comment[ ]"
+    }]
   }, {
-    "nid": 14,
-    "type": "Camera",
-    "x": 549,
-    "y": 478,
-    "fields": {
-      "in": [{
-        "name": "fov"
-      }, {
-        "name": "aspect"
-      }, {
-        "name": "near"
-      }, {
-        "name": "far"
-      }, {
-        "name": "position"
-      }, {
-        "name": "target"
-      }, {
-        "name": "useTarget"
-      }],
-      "out": [{
-        "name": "out"
-      }]
-    }
+    "nid": 3,
+    "title": "Comment",
+    "x": 500,
+    "y": 300,
+    "fields": [{
+      "name": "id",
+      "type": "@id"
+    }, {
+      "name": "post",
+      "type": "Post"
+    }, {
+      "name": "user",
+      "type": "User"
+    }, {
+      "name": "data",
+      "type": "String"
+    }]
   }, {
-    "nid": 23,
-    "type": "Scene",
-    "x": 1216,
-    "y": 217,
-    "fields": {
-      "in": [{
-        "name": "children"
-      }, {
-        "name": "position"
-      }, {
-        "name": "rotation"
-      }, {
-        "name": "scale"
-      }, {
-        "name": "doubleSided"
-      }, {
-        "name": "visible"
-      }, {
-        "name": "castShadow"
-      }, {
-        "name": "receiveShadow"
-      }],
-      "out": [{
-        "name": "out"
-      }]
-    }
-  }, {
-    "nid": 35,
-    "type": "Merge",
-    "x": 948,
-    "y": 217,
-    "fields": {
-      "in": [{
-        "name": "in0"
-      }, {
-        "name": "in1"
-      }, {
-        "name": "in2"
-      }, {
-        "name": "in3"
-      }, {
-        "name": "in4"
-      }, {
-        "name": "in5"
-      }],
-      "out": [{
-        "name": "out"
-      }]
-    }
-  }, {
-    "nid": 45,
-    "type": "Color",
-    "x": 950,
-    "y": 484,
-    "fields": {
-      "in": [{
-        "name": "rgb"
-      }, {
-        "name": "r"
-      }, {
-        "name": "g"
-      }, {
-        "name": "b"
-      }],
-      "out": [{
-        "name": "rgb"
-      }, {
-        "name": "r"
-      }, {
-        "name": "g"
-      }, {
-        "name": "b"
-      }]
-    }
-  }, {
-    "nid": 55,
-    "type": "Vector3",
-    "x": 279,
-    "y": 503,
-    "fields": {
-      "in": [{
-        "name": "xyz"
-      }, {
-        "name": "x"
-      }, {
-        "name": "y"
-      }, {
-        "name": "z"
-      }],
-      "out": [{
-        "name": "xyz"
-      }, {
-        "name": "x"
-      }, {
-        "name": "y"
-      }, {
-        "name": "z"
-      }]
-    }
-  }, {
-    "nid": 65,
-    "type": "ThreeMesh",
-    "x": 707,
-    "y": 192,
-    "fields": {
-      "in": [{
-        "name": "children"
-      }, {
-        "name": "position"
-      }, {
-        "name": "rotation"
-      }, {
-        "name": "scale"
-      }, {
-        "name": "doubleSided"
-      }, {
-        "name": "visible"
-      }, {
-        "name": "castShadow"
-      }, {
-        "name": "receiveShadow"
-      }, {
-        "name": "geometry"
-      }, {
-        "name": "material"
-      }, {
-        "name": "overdraw"
-      }],
-      "out": [{
-        "name": "out"
-      }]
-    }
-  }, {
-    "nid": 79,
-    "type": "Timer",
-    "x": 89,
-    "y": 82,
-    "fields": {
-      "in": [{
-        "name": "reset"
-      }, {
-        "name": "pause"
-      }, {
-        "name": "max"
-      }],
-      "out": [{
-        "name": "out"
-      }]
-    }
-  }, {
-    "nid": 84,
-    "type": "MathMult",
-    "x": 284,
-    "y": 82,
-    "fields": {
-      "in": [{
-        "name": "in"
-      }, {
-        "name": "factor"
-      }],
-      "out": [{
-        "name": "out"
-      }]
-    }
-  }, {
-    "nid": 89,
-    "type": "Vector3",
-    "x": 486,
-    "y": 188,
-    "fields": {
-      "in": [{
-        "name": "xyz"
-      }, {
-        "name": "x"
-      }, {
-        "name": "y"
-      }, {
-        "name": "z"
-      }],
-      "out": [{
-        "name": "xyz"
-      }, {
-        "name": "x"
-      }, {
-        "name": "y"
-      }, {
-        "name": "z"
-      }]
-    }
+    "nid": 2,
+    "title": "Post",
+    "x": 400,
+    "y": 100,
+    "fields": [{
+      "name": "id",
+      "type": "@id"
+    }, {
+      "name": "user",
+      "type": "User"
+    }, {
+      "name": "comments",
+      "type": "Comment[]"
+    }, {
+      "name": "data",
+      "type": "String"
+    }]
   }],
   "connections": [{
-    "from_node": 55,
-    "from": "xyz",
-    "to_node": 14,
-    "to": "position"
+    from_node: 1,
+    from_field: {
+      "name": "posts",
+      "type": "Post[]"
+    },
+    to_node: 2,
+    to_field: {
+      "name": "user",
+      "type": "User"
+    }
+  }, {
+    from_node: 1,
+    from_field: {
+      "name": "comments",
+      "type": "Comment[]"
+    },
+    to_node: 3,
+    to_field: {
+      "name": "user",
+      "type": "User"
+    }
+  }, {
+    from_node: 2,
+    from_field: {
+      "name": "comments",
+      "type": "Comment[]"
+    },
+    to_node: 3,
+    to_field: {
+      "name": "post",
+      "type": "Post"
+    }
   }]
 };
 
 exports.default = function () {
-  var _a = React.useState(exampleGraph.nodes),
-      nodes = _a[0],
-      setNodes = _a[1];
-
-  var _b = React.useState(exampleGraph.connections),
-      connections = _b[0],
-      setConnections = _b[1];
-
-  function _onNewConnector(fromNode, fromPin, toNode, toPin) {
-    console.log("New Connector Added");
+  function _onNewConnector(connector) {// console.log("New Connector Added");
   }
 
-  function _onRemoveConnector(connector) {
-    console.log("Connector Removed");
+  function _onRemoveConnector(connector) {// console.log("Connector Removed");
   }
 
-  function _onNodeMove(nid, pos) {
-    console.log('end move : ' + nid, pos);
+  function _onNodeMove(nid, pos) {// console.log('end move : ' + nid, pos)
   }
 
-  function _onNodeStartMove(nid) {
-    console.log('start move : ' + nid);
+  function _onNodeStartMove(nid) {// console.log('start move : ' + nid)
   }
 
-  function handleNodeSelect(nid) {
-    console.log('node selected : ' + nid);
+  function handleNodeSelect(nid) {// console.log('node selected : ' + nid)
   }
 
-  function handleNodeDeselect(nid) {
-    console.log('node deselected : ' + nid);
+  function handleNodeDeselect(nid) {// console.log('node deselected : ' + nid)
   }
 
   return React.createElement(src_1.NaphProvider, {
@@ -37058,8 +36832,8 @@ exports.default = function () {
     onNodeStartMove: function onNodeStartMove(nid) {
       return _onNodeStartMove(nid);
     },
-    onNewConnector: function onNewConnector(n1, o, n2, i) {
-      return _onNewConnector(n1, o, n2, i);
+    onNewConnector: function onNewConnector(connector) {
+      return _onNewConnector(connector);
     },
     onRemoveConnector: function onRemoveConnector(connector) {
       return _onRemoveConnector(connector);
@@ -37120,7 +36894,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46749" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38553" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

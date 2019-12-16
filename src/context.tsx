@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { Data, Position, Connection, NodeType } from './types'
-
+import { Data, Position, Connection, NodeType, Field } from './types'
 
 interface NaphProviderStore {
 
@@ -12,8 +11,14 @@ interface NaphProviderStore {
   setNodes: React.Dispatch<React.SetStateAction<NodeType[]>>
   mousePos: Position;
   setMousePos: React.Dispatch<React.SetStateAction<Position>>
-  source: number[];
-  setSource: React.Dispatch<React.SetStateAction<number[]>>
+  source: {
+    nid: number;
+    field: Field;
+  };
+  setSource: React.Dispatch<React.SetStateAction<{
+    nid: number;
+    field: Field;
+  }>>
   dragging: boolean;
   setDragging: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -26,7 +31,7 @@ export const NaphProvider: React.FC<NaphProviderProps> = (props) => {
   const [connections, setConnections] = React.useState(props.data.connections);
   const [nodes, setNodes] = React.useState(props.data.nodes);
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
-  const [source, setSource] = React.useState([] as number[]);
+  const [source, setSource] = React.useState({} as NaphProviderStore['source']);
   const [dragging, setDragging] = React.useState(false);
 
   function addConnector(connection: Connection) {

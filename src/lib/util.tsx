@@ -10,8 +10,8 @@ export function computeInOffsetByIndex(x: number, y: number, index: number) {
 }
 
 export function computeOutOffsetByIndex(x: number, y: number, index: number) {
-  let outx = x + 166;
-  let outy = y + 49 + index * 22;
+  let outx = x + 180;
+  let outy = y + 49 + index * 20;
 
   return { x: outx, y: outy };
 }

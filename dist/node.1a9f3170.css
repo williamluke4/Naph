@@ -6,35 +6,35 @@ body {
     color: #323232;
     line-height: 20px;
     overflow-x: hidden;
-    font-size: 14px;
-    font-weight: 400;
+		font-size: 14px;
+		margin: 0;
+		font-weight: 400;
+		background-color:rgb(244, 248, 250);
     text-rendering:optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
-	background: url('/gridtile.02207ab3.png');
 }
 
 
 .node {
 	position: absolute; 
-	width:180px;
-    border: 1px solid transparent;
+	width:200px;
 	border-radius: 4px;
 	-webkit-box-shadow: 6px 6px 28px -2px rgba(0,0,0,0.4);
 	-moz-box-shadow: 6px 6px 28px -2px rgba(0,0,0,0.4);
 	box-shadow: 6px 6px 28px -2px rgba(0,0,0,0.4);
-	background-color: rgba(0,0,0,.7);
+	background-color:white;
     user-select: none;
 }
 
 .node.selected {
-    border: 1px solid #666;
-    box-shadow: 0 0 8px 3px #555;
+    border: 0px solid #15BD76;
+    box-shadow: 0 0 10px 0px #15bd765e;
 }
 
 .node-seperator {
-	color: black;
-	border-color: black;
+	color: rgb(239, 243, 245);;
+	border-color: rgb(239, 243, 245);;
 }
 
 .node-content {
@@ -48,7 +48,7 @@ body {
 .node-header {
 	cursor: all-scroll;
 
-	background: rgba(248,80,50,1);
+	background: #15BD76;
 	
 	padding-left: 10px;
     text-transform: uppercase;
@@ -56,7 +56,7 @@ body {
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 
-	border-bottom: 1px solid #353535;
+	border-bottom: 1px solid #808080af;
 
 	padding-top: 3px;
     height: 23px;
@@ -93,7 +93,7 @@ body {
 }
 
 .connector.selected {
-	stroke: #337ab7;
+	stroke: #15BD76;;
 }
 
 .trash-icon .trash-icon-trashcan {
@@ -105,7 +105,7 @@ body {
 }
 
 .trash-icon:hover .trash-icon-bg {
-    stroke:#337ab7;
+    stroke:#15BD76;;
     stroke-width: 2;
     opacity: 0.5;
 }
@@ -115,12 +115,12 @@ body {
 }
 
 .nodeInputWrapper {
-	width : 65%;
+	width : 50%;
 	float: left;
 }
 
 .nodeOutputWrapper {
-	width : 35%;
+	width : 50%;
 	float: right;
 	text-align: right;
 }
