@@ -1,3 +1,15 @@
+# v0.3.1 (Mon Dec 16 2019)
+
+#### 🐛  Bug Fix
+
+- fix(WARNING): WIP  (william@ordino.ai)
+
+#### Authors: 1
+
+- William Luke (william@ordino.ai)
+
+---
+
 # v0.3.0 (Sat Dec 14 2019)
 
 #### 🚀  Enhancement
