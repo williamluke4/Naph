@@ -11,10 +11,10 @@ export interface Data {
 }
 
 export interface Connection {
-  from_node: number;
-  from_field: Field;
-  to_node: number;
-  to_field: Field;
+  from_node_id: number;
+  from_field_name: string;
+  to_node_id: number;
+  to_field_name: string;
 }
 
 export interface NodeType {

@@ -37,9 +37,9 @@
   "scripts": {
     "build:src": "tsc -d",
     "build:example": "parcel build example/index.html --no-source-maps",
-    "build": "npm run build:src && npm run build:example",
+    "build": "rm -rf ./dist && npm run build:src && npm run build:example",
     "release": "auto shipit",
-    "dev": "parcel example/index.html"
+    "dev": "rm -rf ./dist && parcel example/index.html"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import NaphGraph, { NaphContext, NaphProvider, Connection, Data } from '../src';
+import NaphGraph, { NaphProvider, Connection, Data } from '../src';
 var exampleGraph: Data = {
   "nodes":[
     {"nid":1,"title":"User","x":50,"y":50,"fields":[
@@ -28,22 +28,22 @@ var exampleGraph: Data = {
   ],
   "connections":[
     {
-      from_node: 1,
-      from_field: {"name":"posts", "type":"Post[]"},
-      to_node: 2,
-      to_field: {"name":"user", "type":"User"},
+      from_node_id: 1,
+      from_field_name: "posts",
+      to_node_id: 2,
+      to_field_name: "user",
     },
     {
-      from_node: 1,
-      from_field: {"name":"comments", "type":"Comment[]"},
-      to_node: 3,
-      to_field: {"name":"user", "type":"User"},
+      from_node_id: 1,
+      from_field_name:"comments",
+      to_node_id: 3,
+      to_field_name: "user",
     },
     {
-      from_node: 2,
-      from_field: {"name":"comments", "type":"Comment[]"},
-      to_node: 3,
-      to_field: {"name":"post", "type":"Post"},
+      from_node_id: 2,
+      from_field_name: "comments",
+      to_node_id: 3,
+      to_field_name: "post",
     }
   ]
 };

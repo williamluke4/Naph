@@ -89,14 +89,12 @@ const ReactNodeGraph = ({
       let nodes = naphContext.nodes;
       let fromNode = getNodebyId(nodes, naphContext.source.nid);
       let toNode = getNodebyId(nodes, nid);
-      let fromField = fromNode && fromNode.fields.find(f => f.name === naphContext.source.field.name);
-      let toField = toNode && toNode.fields.find(f => f.name === field.name);
-      if (fromNode && toNode && fromField && toField) {
+      if (fromNode && toNode) {
         const newConnector = {
-          from_field: fromField,
-          from_node: fromNode.nid,
-          to_field: toField,
-          to_node: toNode.nid
+          from_field_name: naphContext.source.field.name,
+          from_node_id: fromNode.nid,
+          to_field_name: field.name,
+          to_node_id: toNode.nid
         }
         naphContext.addConnector(newConnector)
         onNewConnector(newConnector);
@@ -125,11 +123,11 @@ const ReactNodeGraph = ({
     }
   };
 
-  const computeFieldIndexfromFieldName = (fields: Field[], field: Field) => {
+  const computeFieldIndexfromFieldName = (fields: Field[], field_name: string) => {
     let reval = 0;
 
     for (let f of fields) {
-      if (f.name === field.name) {
+      if (f.name === field_name) {
         return reval;
       } else {
         reval++;
@@ -181,17 +179,17 @@ const ReactNodeGraph = ({
 
         <SVGComponent height="100%" width="100%" childRef={svgRef}>
           {naphContext.connections.map((connector, connectorIndex) => {
-            const fromNode = getNodebyId(nodes, connector.from_node);
-            const toNode = getNodebyId(nodes, connector.to_node);
+            const fromNode = getNodebyId(nodes, connector.from_node_id);
+            const toNode = getNodebyId(nodes, connector.to_node_id);
 
             if (fromNode && toNode) {
               const startPinIndex = computeFieldIndexfromFieldName(
                 fromNode.fields,
-                connector.from_field
+                connector.from_field_name
               );
               const endPinIndex = computeFieldIndexfromFieldName(
                 toNode.fields,
-                connector.to_field
+                connector.to_field_name
                 );
               if (
                 typeof startPinIndex === "number" &&
