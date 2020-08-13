@@ -1,30 +1,27 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { Position, Item } from '../types';
-import NodeInputList from "./NodeInputList";
-import NodeOutputList from "./NodeOutputList";
+import { Position, Field } from '../types';
 import useClickAway from "../hooks/useClickAway";
+import NodeFields from "./NodeFields";
 interface NodeProps {
     nid: number;
     pos: Position;
     title: string;
-    inputs: Item[];
-    outputs: Item[];
+    fields: Field[];
     onNodeStart: (nid: number, ui: DraggableData) => void;
     onNodeStop: (nid: number, position: Position) => void;
     onNodeMove: (nid: number, position: Position) => void;
     onNodeSelect: (nid: number) => void;
     onNodeDeselect: (nid: number) => void;
-    onStartConnector: (nid: number, index: number) => void;
-    onCompleteConnector: (nid: number, index: number) => void;
+    onStartConnector: (nid: number, field: Field) => void;
+    onCompleteConnector: (nid: number, field: Field) => void;
     index: number;
 }
 const Node = ({
   nid,
   pos,
   title,
-  inputs,
-  outputs,
+  fields,
   onNodeStart,
   onNodeStop,
   onNodeMove,
@@ -48,12 +45,12 @@ const Node = ({
     onNodeMove(propIndex, {x:ui.x, y:ui.y});
   }
 
-  const handleStartConnector = (index: number) => {
-      onStartConnector(nid, index);
+  const handleStartConnector = (field: Field) => {
+      onStartConnector(nid, field);
   }
 
-  const handleCompleteConnector = (index: number) => {
-    onCompleteConnector(nid, index);
+  const handleCompleteConnector = (field: Field) => {
+    onCompleteConnector(nid, field);
   }
 
   const handleClick = () => {
@@ -72,7 +69,7 @@ const Node = ({
   
 
 
-  const nodeClass = useMemo(() => "node" + (isSelected ? " selected" : ""), [
+  const NodeClass = useMemo(() => "node" + (isSelected ? " selected" : ""), [
     isSelected
   ]);
 
@@ -85,17 +82,14 @@ const Node = ({
         onStop={handleDragStop}
         onDrag={handleDrag}
       >
-        <section className={nodeClass} style={{ zIndex: 10000 }}>
+        <section className={NodeClass} style={{ zIndex: 10000 }}>
           <header className="node-header">
             <span className="node-title">{title}</span>
           </header>
           <div className="node-content">
-            <NodeInputList
-              items={inputs}
+            <NodeFields 
+              fields={fields}
               onCompleteConnector={handleCompleteConnector}
-            />
-            <NodeOutputList
-              items={outputs}
               onStartConnector={handleStartConnector}
             />
           </div>

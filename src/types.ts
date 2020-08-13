@@ -3,18 +3,7 @@ export type Position = {
   y: number;
 }
 
-export type Item = {
-  name: string;
-}
-// export type NodeType = {
-//   index: number
-//   nid: number
-//   title: string;
-//   inputs: Item[];
-//   outputs:Item[];
-//   pos: Position;
-//   key: number;
-// }
+
 
 export interface Data {
   nodes: NodeType[];
@@ -22,25 +11,21 @@ export interface Data {
 }
 
 export interface Connection {
-  from_node: number;
-  from: string;
-  to_node: number;
-  to: string;
+  from_node_id: number;
+  from_field_name: string;
+  to_node_id: number;
+  to_field_name: string;
 }
 
 export interface NodeType {
   nid: number;
-  type: string;
+  title: string;
   x: number;
   y: number;
-  fields: Fields;
-}
-
-export interface Fields {
-  in: Field[];
-  out: Field[];
+  fields: Field[];
 }
 
 export interface Field {
   name: string;
+  type: string;
 }

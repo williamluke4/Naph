@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
 import { Position } from "../types";
-import { useObjectState } from "./util";
 import TrashIcon from "./TrashIcon";
 import useClickAway from "../hooks/useClickAway";
 

@@ -26,12 +26,7 @@ interface ReactNodeGraphProps {
   onNodeMove: (nid: number, position: Position) => void;
   onNodeSelect: (nid: number) => void;
   onNodeDeselect: (nid: number) => void;
-  onNewConnector: (
-    fromNid: number,
-    fromPinName: string,
-    toNid: number,
-    toPinName: string
-  ) => void;
+  onNewConnector: (connector: Connection) => void;
   onRemoveConnector: (connector: Connection) => void;
 }
 const ReactNodeGraph = ({
@@ -84,26 +79,25 @@ const ReactNodeGraph = ({
     naphContext.setNodes(nodes);
   };
 
-  const handleStartConnector = (nid: number, outputIndex: number) => {
+  const handleStartConnector = (nid: number, outputField: Field) => {
     naphContext.setDragging(true);
-    naphContext.setSource([nid, outputIndex]);
+    naphContext.setSource({nid, field:outputField});
   };
 
-  const handleCompleteConnector = (nid: number, inputIndex: number) => {
+  const handleCompleteConnector = (nid: number, field: Field) => {
     if (naphContext.dragging) {
       let nodes = naphContext.nodes;
-      let fromNode = getNodebyId(nodes, naphContext.source[0]);
+      let fromNode = getNodebyId(nodes, naphContext.source.nid);
       let toNode = getNodebyId(nodes, nid);
       if (fromNode && toNode) {
-        let fromPinName = fromNode && fromNode.fields.out[naphContext.source[1]].name;
-        let toPinName = toNode.fields.in[inputIndex].name;
-        naphContext.addConnector({
-          from: fromPinName,
-          from_node: fromNode.nid,
-          to: toPinName,
-          to_node: toNode.nid
-        })
-        onNewConnector(fromNode.nid, fromPinName, toNode.nid, toPinName);
+        const newConnector = {
+          from_field_name: naphContext.source.field.name,
+          from_node_id: fromNode.nid,
+          to_field_name: field.name,
+          to_node_id: toNode.nid
+        }
+        naphContext.addConnector(newConnector)
+        onNewConnector(newConnector);
       }
     }
 
@@ -129,11 +123,11 @@ const ReactNodeGraph = ({
     }
   };
 
-  const computePinIndexfromLabel = (pins: Field[], pinLabel: string) => {
+  const computeFieldIndexfromFieldName = (fields: Field[], field_name: string) => {
     let reval = 0;
 
-    for (let pin of pins) {
-      if (pin.name === pinLabel) {
+    for (let f of fields) {
+      if (f.name === field_name) {
         return reval;
       } else {
         reval++;
@@ -146,12 +140,12 @@ const ReactNodeGraph = ({
     let newConnector = null;
 
     if (naphContext.dragging) {
-      let sourceNode = getNodebyId(nodes, naphContext.source[0]);
+      let sourceNode = getNodebyId(nodes, naphContext.source.nid);
       if (sourceNode) {
         let connectorStart = computeOutOffsetByIndex(
           sourceNode.x,
           sourceNode.y,
-          naphContext.source[1]
+          sourceNode.fields.findIndex(f => f.name === naphContext.source.field.name)
         );
         let connectorEnd = naphContext.mousePos;
 
@@ -166,9 +160,8 @@ const ReactNodeGraph = ({
             <Node
               index={i}
               nid={node.nid}
-              title={node.type}
-              inputs={node.fields.in}
-              outputs={node.fields.out}
+              title={node.title}
+              fields={node.fields}
               pos={{ x: node.x, y: node.y }}
               key={node.nid}
               onNodeStart={handleNodeStart}
@@ -186,17 +179,18 @@ const ReactNodeGraph = ({
 
         <SVGComponent height="100%" width="100%" childRef={svgRef}>
           {naphContext.connections.map((connector, connectorIndex) => {
-            const fromNode = getNodebyId(nodes, connector.from_node);
-            const toNode = getNodebyId(nodes, connector.to_node);
+            const fromNode = getNodebyId(nodes, connector.from_node_id);
+            const toNode = getNodebyId(nodes, connector.to_node_id);
+
             if (fromNode && toNode) {
-              const startPinIndex = computePinIndexfromLabel(
-                fromNode.fields.out,
-                connector.from
+              const startPinIndex = computeFieldIndexfromFieldName(
+                fromNode.fields,
+                connector.from_field_name
               );
-              const endPinIndex = computePinIndexfromLabel(
-                toNode.fields.in,
-                connector.to
-              );
+              const endPinIndex = computeFieldIndexfromFieldName(
+                toNode.fields,
+                connector.to_field_name
+                );
               if (
                 typeof startPinIndex === "number" &&
                 typeof endPinIndex === "number"
