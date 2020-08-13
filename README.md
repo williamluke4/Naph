@@ -7,6 +7,7 @@
 </p>
 
 [![npm version](https://badge.fury.io/js/naph.svg)](https://badge.fury.io/js/naph)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/<org>/<repo>)
 
 ## Install
 
