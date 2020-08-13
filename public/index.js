@@ -33482,7 +33482,7 @@ function stubFalse() {
 
 module.exports = cloneDeep;
 
-},{}],"../src/lib/TrashIcon.tsx":[function(require,module,exports) {
+},{}],"renderer/lib/TrashIcon.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -33531,7 +33531,7 @@ var TrashIcon = function TrashIcon(_a) {
 };
 
 exports.default = TrashIcon;
-},{"react":"../node_modules/react/index.js"}],"../src/hooks/util.ts":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"renderer/hooks/util.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33557,7 +33557,7 @@ exports.off = function (obj) {
 
   return obj.removeEventListener.apply(obj, args);
 };
-},{}],"../src/hooks/useClickAway.tsx":[function(require,module,exports) {
+},{}],"renderer/hooks/useClickAway.tsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33600,7 +33600,7 @@ exports.useClickAway = function (ref, onClickAway, events) {
 };
 
 exports.default = exports.useClickAway;
-},{"react":"../node_modules/react/index.js","./util":"../src/hooks/util.ts"}],"../src/lib/Spline.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./util":"renderer/hooks/util.ts"}],"renderer/lib/Spline.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -33724,7 +33724,7 @@ var Spline = function Spline(_a) {
 };
 
 exports.default = Spline;
-},{"react":"../node_modules/react/index.js","./TrashIcon":"../src/lib/TrashIcon.tsx","../hooks/useClickAway":"../src/hooks/useClickAway.tsx"}],"../src/lib/SVGComponent.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./TrashIcon":"renderer/lib/TrashIcon.tsx","../hooks/useClickAway":"renderer/hooks/useClickAway.tsx"}],"renderer/lib/SVGComponent.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -36004,7 +36004,7 @@ var global = arguments[3];
 })));
 
 
-},{"react-dom":"../node_modules/react-dom/index.js","react":"../node_modules/react/index.js"}],"../src/lib/NodeField.tsx":[function(require,module,exports) {
+},{"react-dom":"../node_modules/react-dom/index.js","react":"../node_modules/react/index.js"}],"renderer/lib/NodeField.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -36088,7 +36088,7 @@ var NodeField = function NodeField(_a) {
 };
 
 exports.default = react_1.default.memo(NodeField);
-},{"react":"../node_modules/react/index.js"}],"../src/lib/NodeFields.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"renderer/lib/NodeFields.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -36133,7 +36133,7 @@ var NodeFieldsList = function NodeFieldsList(_a) {
 };
 
 exports.default = react_1.default.memo(NodeFieldsList);
-},{"react":"../node_modules/react/index.js","./NodeField":"../src/lib/NodeField.tsx"}],"../src/lib/Node.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./NodeField":"renderer/lib/NodeField.tsx"}],"renderer/lib/Node.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -36259,7 +36259,7 @@ var Node = function Node(_a) {
 };
 
 exports.default = Node;
-},{"react":"../node_modules/react/index.js","react-draggable":"../node_modules/react-draggable/dist/react-draggable.js","../hooks/useClickAway":"../src/hooks/useClickAway.tsx","./NodeFields":"../src/lib/NodeFields.tsx"}],"../src/lib/util.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-draggable":"../node_modules/react-draggable/dist/react-draggable.js","../hooks/useClickAway":"renderer/hooks/useClickAway.tsx","./NodeFields":"renderer/lib/NodeFields.tsx"}],"renderer/lib/util.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -36334,7 +36334,7 @@ function useObjectState(initialState) {
 }
 
 exports.useObjectState = useObjectState;
-},{"react":"../node_modules/react/index.js"}],"../src/context.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"renderer/context.tsx":[function(require,module,exports) {
 "use strict";
 
 var __spreadArrays = this && this.__spreadArrays || function () {
@@ -36430,13 +36430,13 @@ exports.NaphProvider = function (props) {
     value: store
   }, props.children);
 };
-},{"react":"../node_modules/react/index.js"}],"../src/types.ts":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"renderer/types.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-},{}],"../src/index.tsx":[function(require,module,exports) {
+},{}],"renderer/index.tsx":[function(require,module,exports) {
 "use strict";
 
 function __export(m) {
@@ -36682,7 +36682,7 @@ __export(require("./types"));
 __export(require("./context"));
 
 exports.default = react_1.default.memo(ReactNodeGraph);
-},{"react":"../node_modules/react/index.js","lodash.clonedeep":"../node_modules/lodash.clonedeep/index.js","./lib/Spline":"../src/lib/Spline.tsx","./lib/SVGComponent":"../src/lib/SVGComponent.tsx","./lib/Node":"../src/lib/Node.tsx","./lib/util":"../src/lib/util.tsx","./context":"../src/context.tsx","./types":"../src/types.ts"}],"App.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","lodash.clonedeep":"../node_modules/lodash.clonedeep/index.js","./lib/Spline":"renderer/lib/Spline.tsx","./lib/SVGComponent":"renderer/lib/SVGComponent.tsx","./lib/Node":"renderer/lib/Node.tsx","./lib/util":"renderer/lib/util.tsx","./context":"renderer/context.tsx","./types":"renderer/types.ts"}],"App.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -36701,7 +36701,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var React = __importStar(require("react"));
 
-var src_1 = __importStar(require("../src"));
+var renderer_1 = __importStar(require("./renderer"));
 
 var exampleGraph = {
   "nodes": [{
@@ -36799,9 +36799,9 @@ exports.default = function () {
   function handleNodeDeselect(nid) {// console.log('node deselected : ' + nid)
   }
 
-  return React.createElement(src_1.NaphProvider, {
+  return React.createElement(renderer_1.NaphProvider, {
     data: exampleGraph
-  }, React.createElement(src_1.default, {
+  }, React.createElement(renderer_1.default, {
     onNodeMove: function onNodeMove(nid, pos) {
       return _onNodeMove(nid, pos);
     },
@@ -36822,7 +36822,7 @@ exports.default = function () {
     }
   }));
 };
-},{"react":"../node_modules/react/index.js","../src":"../src/index.tsx"}],"index.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./renderer":"renderer/index.tsx"}],"index.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -36870,7 +36870,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40887" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33311" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -37047,4 +37047,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.tsx"], null)
-//# sourceMappingURL=/example.f69400ca.js.map
+//# sourceMappingURL=/index.js.map

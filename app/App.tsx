@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import NaphGraph, { NaphProvider, Connection, Data } from '../src';
+import NaphGraph, { NaphProvider, Connection, Data } from './renderer';
 var exampleGraph: Data = {
   "nodes":[
     {"nid":1,"title":"User","x":50,"y":50,"fields":[
