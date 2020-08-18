@@ -1,3 +1,5 @@
+import { DMMF } from '@prisma/generator-helper';
+
 export type Position = {
   x: number;
   y: number;
@@ -20,6 +22,7 @@ export interface Connection {
 export interface NodeType {
   nid: number;
   title: string;
+  model: DMMF.Model;
   x: number;
   y: number;
   fields: Field[];

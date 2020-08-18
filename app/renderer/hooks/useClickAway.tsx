@@ -1,18 +1,18 @@
-import { RefObject, useEffect, useRef } from 'react';
-import { off, on } from './util';
+import * as React from "react";
+import { off, on } from "./util";
 
-const defaultEvents = ['mousedown', 'touchstart'];
+const defaultEvents = ["mousedown", "touchstart"];
 
 export const useClickAway = (
-  ref: RefObject<any | null>,
+  ref: React.RefObject<any | null>,
   onClickAway: (event: KeyboardEvent) => void,
   events: string[] = defaultEvents
 ) => {
-  const savedCallback = useRef(onClickAway);
-  useEffect(() => {
+  const savedCallback = React.useRef(onClickAway);
+  React.useEffect(() => {
     savedCallback.current = onClickAway;
   }, [onClickAway]);
-  useEffect(() => {
+  React.useEffect(() => {
     const handler = (event: any) => {
       const { current: el } = ref;
       el && !el.contains(event.target) && savedCallback.current(event);

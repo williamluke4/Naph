@@ -1,0 +1,12 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: npm install && npm run build
+    command: npm run dev
+
+vscode:
+  extensions:
+    - pflannery.vscode-versionlens@1.0.8:oKj6qejw3b092PPtUeOAJA==
+    - Prisma.prisma-insider@4.0.5:ecSqNOLRWUSRX3CurxbKcw==
+    - esbenp.prettier-vscode@5.1.3:t532ajsImUSrA9N8Bd7jQw==

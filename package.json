@@ -1,54 +1,76 @@
 {
   "name": "naph",
   "version": "0.3.1",
-  "description": "UI for rendering Node Graphs.",
+  "description": "🐱‍👤",
   "main": "build/index.js",
   "files": [
-    "build/**/*",
-    "src/**/*"
+    "build/**/*"
   ],
+  "bin": {
+    "naph": "build/bin.js"
+  },
   "peerDependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
     "@auto-it/conventional-commits": "^7.13.1",
+    "@prisma/cli": "^2.4.1",
     "@types/lodash.clonedeep": "^4.5.6",
-    "@types/react": "^16.9.16",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
     "@types/react-onclickoutside": "^6.7.3",
-    "@typescript-eslint/eslint-plugin": "^2.11.0",
-    "@typescript-eslint/parser": "^2.11.0",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "@zeit/ncc": "^0.20.5",
     "auto": "^7.13.1",
-    "eslint-plugin-react": "^7.12.4",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^1.6.0",
     "parcel-bundler": "^1.12.4",
-    "react": "^16.12.0",
-    "react-hot-loader": "^4.12.18",
-    "tslib": "^1.10.0",
-    "typescript": "^3.7.3",
-    "eslint": "^6.0.0"
+    "react": "^16.13.1",
+    "@types/dagre": "^0.7.44",
+    "react-hot-loader": "^4.12.21",
+    "tslib": "^1.13.0",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@prisma/client": "^2.4.1",
+    "@prisma/sdk": "^2.4.1",
+    "arg": "^4.1.2",
+    "chalk": "^2.4.2",
+    "dagre": "^0.8.5",
+    "express": "^4.17.1",
+    "fastify": "^3.2.0",
+    "fastify-cors": "^4.1.0",
+    "fastify-static": "^2.6.0",
+    "lodash": "^4.17.15",
     "lodash.clonedeep": "^4.5.0",
-    "react-dom": "^16.12.0",
-    "react-draggable": "^3.3.2"
+    "npm-run-all": "^4.1.5",
+    "open": "^7.1.0",
+    "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
+    "react-dom": "^16.13.1",
+    "react-draggable": "^3.3.2",
+    "react-spinners": "^0.9.0",
+    "strip-indent": "^3.0.0",
+    "swr": "^0.3.0"
   },
   "scripts": {
-    "build:src": "tsc -d",
-    "build:example": "parcel build example/index.html --no-source-maps",
-    "build": "rm -rf ./dist && npm run build:src && npm run build:example",
-    "release": "auto shipit",
-    "dev": "rm -rf ./dist && parcel example/index.html"
+    "build:cli": "tsc -d",
+    "build:web": "parcel build app/renderer/index.html -d public",
+    "build": "npm run build:cli && npm run build:web",
+    "dev:web": "parcel ./app/renderer/index.html -d public -p 8080",
+    "dev:cli": "ts-node ./app/bin ",
+    "dev": "npm run dev:web & npm run dev:cli"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/williamluke4/Naph.git"
   },
   "keywords": [
-    "react",
-    "component",
-    "react-component",
+    "cli",
+    "prisma",
     "node",
     "graph",
     "ui"

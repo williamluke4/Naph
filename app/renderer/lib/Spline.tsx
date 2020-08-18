@@ -60,9 +60,9 @@ const Spline = ({ mousePos, onClick, onRemove, start, end }: SplineProps) => {
       bezierCurve(
         start.x || 0, // start x
         start.y || 0, // start y
-        start.x + dist * 0.25 || 0, // cp1 x
+        start.x + dist * 0.8 || 0, // cp1 x
         start.y || 0, // cp1 y
-        end.x - dist * 0.75 || 0, // cp2 x
+        end.x - dist * 0.8 || 0, // cp2 x
         end.y || 0, // cp2 y
         end.x || 0, // end x
         end.y || 0

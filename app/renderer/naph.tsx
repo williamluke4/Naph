@@ -4,6 +4,7 @@ import Spline from "./lib/Spline";
 import SVGComponent from "./lib/SVGComponent";
 import Node from "./lib/Node";
 import { NodeType, Data, Position, Field, Connection } from "./types";
+
 import {
   computeOutOffsetByIndex,
   computeInOffsetByIndex,

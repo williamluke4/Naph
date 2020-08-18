@@ -77,6 +77,7 @@ const Node = ({
     <div onDoubleClick={handleClick} ref={ref}>
       <Draggable
         defaultPosition={{ x: pos.x, y: pos.y }}
+        position={{x: pos.x, y: pos.y }}
         handle=".node-header"
         onStart={handleDragStart}
         onStop={handleDragStop}
