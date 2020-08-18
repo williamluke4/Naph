@@ -1,6 +1,6 @@
 import { Command } from "./helpers/types";
 import { startServer } from '../server';
-
+import open from 'open';
 
 
 export class Run implements Command {
@@ -10,6 +10,8 @@ export class Run implements Command {
   private constructor() {}
   async parse(args: string[]) {
     startServer(args && args[0])
+    open('http://localhost:8080');
+
     return ""
   }
 }
