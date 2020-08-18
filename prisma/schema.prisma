@@ -2,14 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file://db.sql"
 }
 
 generator client {
   provider = "prisma-client-js"
 }
-
 
 model Post {
   post_id   Int     @default(autoincrement()) @id
@@ -20,16 +19,16 @@ model Post {
 }
 
 model Profile {
-  bio        String?
   profile_id Int     @default(autoincrement()) @id
+  bio        String?
   user_id    Int
   user       User    @relation(fields: [user_id], references: [user_id]) // renamed from `User` -> `user`
 }
 
 model User {
+  user_id  Int       @default(autoincrement()) @id
   email    String    @unique
   name     String?
-  user_id  Int       @default(autoincrement()) @id
   posts    Post[] // renamed from `Post` -> `posts`
   profiles Profile[] // renamed from `User` -> `profiles`
 }
